@@ -209,5 +209,10 @@ namespace SpookVooper.Api
                 return await GetData($"https://api.spookvooper.com/group/GetName?svid={svid}");
             }
         }
+
+        public static class Economy
+        {
+
+        }
     }
 }
