@@ -19,19 +19,35 @@ namespace SpookVooper.Api
         {
             var httpResponse = await client.GetAsync(url);
 
-            return await httpResponse.Content.ReadAsStringAsync();
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return await httpResponse.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                throw new VooperException($"Response failed: HTTP Code {httpResponse.StatusCode}");
+            }
         }
 
         /// <summary>
         /// All API functions relating to Users
         /// </summary>
-        public static class UserAPI
+        public static class Users
         {
             public static async Task<User> GetUser(string svid)
             {
                 string result = await GetData($"https://api.spookvooper.com/user/GetUser?svid={svid}");
 
-                User user = (User)JsonConvert.DeserializeObject(result);
+                User user = null;
+
+                try
+                {
+                    user = (User)JsonConvert.DeserializeObject(result);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {result}");
+                }
 
                 return user;
             }
@@ -105,9 +121,93 @@ namespace SpookVooper.Api
 
         }
 
-        public static class GroupAPI
-        {
 
+        /// <summary>
+        /// API routes for Groups
+        /// </summary>
+        public static class Groups
+        {
+            public static async Task<decimal> GetBalance(string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/group/GetBalance?svid={svid}");
+
+                decimal result = 0m;
+
+                try
+                {
+                    result = int.Parse(response);
+                }
+                catch(System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return result;
+            }
+
+            public static async Task<bool> DoesGroupExist(string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/group/DoesGroupExist?svid={svid}");
+
+                bool result = false;
+
+                try
+                {
+                    result = bool.Parse(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return result;
+            }
+
+            public static async Task<List<string>> GetGroupMemberIDs(string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/group/GetGroupMembers?svid={svid}");
+
+                List<string> results = null;
+
+                try
+                {
+                    results = JsonConvert.DeserializeObject<List<string>>(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return results;
+            }
+
+            public static async Task<bool> HasGroupPermission(string groupSVID, string userSVID, string permission)
+            {
+                string response = await GetData($"https://api.spookvooper.com/group/HasGroupPermission?svid={groupSVID}&usersvid={userSVID}&permission={permission}");
+
+                bool result = false;
+
+                try
+                {
+                    result = bool.Parse(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return result;
+            }
+
+            public static async Task<string> GetSVIDFromName(string name)
+            {
+                return await GetData($"https://api.spookvooper.com/group/GetSVIDFromName?name={name}");
+            }
+
+            public static async Task<string> GetName(string svid)
+            {
+                return await GetData($"https://api.spookvooper.com/group/GetName?svid={svid}");
+            }
         }
     }
 }
