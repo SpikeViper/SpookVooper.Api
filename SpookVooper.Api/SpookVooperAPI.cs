@@ -135,7 +135,7 @@ namespace SpookVooper.Api
 
                 try
                 {
-                    result = int.Parse(response);
+                    result = decimal.Parse(response);
                 }
                 catch(System.Exception e)
                 {
@@ -212,6 +212,86 @@ namespace SpookVooper.Api
 
         public static class Economy
         {
+            public static async Task<decimal> GetBalance(string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetBalance?svid={svid}");
+
+                decimal result = 0m;
+
+                try
+                {
+                    result = decimal.Parse(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return result;
+            }
+
+            public static async Task<TaskResult> SendTransactionByIDS(string from, string to, decimal amount, string auth, string detail)
+            {
+                string response = "";
+
+                try
+                {
+                   response = await GetData($"https://api.spookvooper.com/eco/SendTransactionByIDS?from={from}&to={to}&amount={amount}&auth={auth}&detail={detail}");
+                }
+                catch (VooperException e)
+                {
+                    // Ignore HTTP error codes, TaskResult handles it
+                }
+
+                TaskResult result = null;
+
+                try
+                {
+                    result = JsonConvert.DeserializeObject<TaskResult>(response);
+                }
+                catch(Exception e)
+                {
+                    result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
+                }
+
+                return result;
+            }
+
+            public static async Task<decimal> GetStockValue(string ticker)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetStockValue?ticker={ticker}");
+
+                decimal result = 0m;
+
+                try
+                {
+                    result = decimal.Parse(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return result;
+            }
+
+            public static async Task<List<decimal>> GetStockHistory(string ticker, )
+            {
+                string response = await GetData($"https://api.spookvooper.com/group/GetGroupMembers?svid={svid}");
+
+                List<string> results = null;
+
+                try
+                {
+                    results = JsonConvert.DeserializeObject<List<string>>(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return results;
+            }
 
         }
     }
