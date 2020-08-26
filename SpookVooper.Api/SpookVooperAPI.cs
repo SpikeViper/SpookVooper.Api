@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SpookVooper.Api.Entities;
+using SpookVooper.Api.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -210,6 +211,9 @@ namespace SpookVooper.Api
             }
         }
 
+        /// <summary>
+        /// Allows for easy use of SpookVooper economic functions
+        /// </summary>
         public static class Economy
         {
             public static async Task<decimal> GetBalance(string svid)
@@ -275,15 +279,15 @@ namespace SpookVooper.Api
                 return result;
             }
 
-            public static async Task<List<decimal>> GetStockHistory(string ticker, )
+            public static async Task<List<decimal>> GetStockHistory(string ticker, string type, int count, int interval)
             {
-                string response = await GetData($"https://api.spookvooper.com/group/GetGroupMembers?svid={svid}");
+                string response = await GetData($"https://api.spookvooper.com/eco/GetStockHistory?ticker={ticker}&type={type}&count={count}&interval={interval}");
 
-                List<string> results = null;
+                List<decimal> results = null;
 
                 try
                 {
-                    results = JsonConvert.DeserializeObject<List<string>>(response);
+                    results = JsonConvert.DeserializeObject<List<decimal>>(response);
                 }
                 catch (System.Exception e)
                 {
@@ -293,6 +297,158 @@ namespace SpookVooper.Api
                 return results;
             }
 
+            public static async Task<List<int>> GetStockVolumeHistory(string ticker, string type, int count, int interval)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetStockHistory?ticker={ticker}&type={type}&count={count}&interval={interval}");
+
+                List<int> results = null;
+
+                try
+                {
+                    results = JsonConvert.DeserializeObject<List<int>>(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return results;
+            }
+
+            public static async Task<TaskResult> SubmitStockBuy(string ticker, int count, decimal price, string accountid, string auth)
+            {
+                string response = "";
+
+                try
+                {
+                    response = await GetData($"https://api.spookvooper.com/eco/SubmitStockBuy?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
+                }
+                catch (VooperException e)
+                {
+                    // Ignore HTTP error codes, TaskResult handles it
+                }
+
+                TaskResult result = null;
+
+                try
+                {
+                    result = JsonConvert.DeserializeObject<TaskResult>(response);
+                }
+                catch (Exception e)
+                {
+                    result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
+                }
+
+                return result;
+            }
+
+            public static async Task<TaskResult> SubmitStockSell(string ticker, int count, decimal price, string accountid, string auth)
+            {
+                string response = "";
+
+                try
+                {
+                    response = await GetData($"https://api.spookvooper.com/eco/SubmitStockSell?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
+                }
+                catch (VooperException e)
+                {
+                    // Ignore HTTP error codes, TaskResult handles it
+                }
+
+                TaskResult result = null;
+
+                try
+                {
+                    result = JsonConvert.DeserializeObject<TaskResult>(response);
+                }
+                catch (Exception e)
+                {
+                    result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
+                }
+
+                return result;
+            }
+
+            public static async Task<TaskResult> CancelOrder(string orderid, string accountid, string auth)
+            {
+                string response = "";
+
+                try
+                {
+                    response = await GetData($"https://api.spookvooper.com/eco/CancelOrder?orderid={orderid}&accountid={accountid}&auth={auth}");
+                }
+                catch (VooperException e)
+                {
+                    // Ignore HTTP error codes, TaskResult handles it
+                }
+
+                TaskResult result = null;
+
+                try
+                {
+                    result = JsonConvert.DeserializeObject<TaskResult>(response);
+                }
+                catch (Exception e)
+                {
+                    result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
+                }
+
+                return result;
+            }
+
+            public static async Task<decimal> GetStockBuyPrice(string ticker)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetStockBuyPrice?ticker={ticker}");
+
+                decimal result = 0m;
+
+                try
+                {
+                    result = decimal.Parse(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return result;
+            }
+
+            public static async Task<List<OfferInfo>> GetQueueInfo(string ticker, string type)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetQueueInfo?ticker={ticker}&type={type}");
+
+                List<OfferInfo> results = null;
+
+                try
+                {
+                    results = JsonConvert.DeserializeObject<List<OfferInfo>>(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return results;
+            }
+
+            public static async Task<List<StockOffer>> GetUserStockOffers(string ticker, string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetUserStockOffers?ticker={ticker}&svid={svid}");
+
+                List<StockOffer> results = null;
+
+                try
+                {
+                    results = JsonConvert.DeserializeObject<List<StockOffer>>(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+
+                return results;
+            }
         }
     }
 }
