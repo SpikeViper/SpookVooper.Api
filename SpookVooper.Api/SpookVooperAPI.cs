@@ -43,7 +43,7 @@ namespace SpookVooper.Api
 
                 try
                 {
-                    user = (User)JsonConvert.DeserializeObject(result);
+                    user = JsonConvert.DeserializeObject<User>(result);
                 }
                 catch (System.Exception e)
                 {
