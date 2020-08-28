@@ -6,3 +6,4 @@ C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netco
 C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.csproj.CoreCompileInputs.cache
 C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.dll
 C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.pdb
+C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.csprojAssemblyReference.cache

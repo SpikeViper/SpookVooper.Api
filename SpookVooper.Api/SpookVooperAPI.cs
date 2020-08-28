@@ -69,7 +69,7 @@ namespace SpookVooper.Api
 
             }
 
-            public static async Task<string> GetUsernameFromDiscord(int discordid)
+            public static async Task<string> GetUsernameFromDiscord(ulong discordid)
             {
                 return await GetData($"https://api.spookvooper.com/user/GetUsernameFromDiscord?discordid={discordid}");
 
