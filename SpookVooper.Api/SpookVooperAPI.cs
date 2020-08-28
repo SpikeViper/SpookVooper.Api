@@ -63,7 +63,7 @@ namespace SpookVooper.Api
                 return await GetData($"https://api.spookvooper.com/user/GetSVIDFromUsername?username={username}");
             }
 
-            public static async Task<string> GetSVIDFromDiscord(int discordid)
+            public static async Task<string> GetSVIDFromDiscord(ulong discordid)
             {
                 return await GetData($"https://api.spookvooper.com/user/GetSVIDFromDiscord?discordid={discordid}");
 
