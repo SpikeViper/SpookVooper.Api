@@ -1,11 +1,17 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace SpookVooper.Api.Entities
+namespace SpookVooper.Web.Controllers.API.Json
 {
-    public class User
+    /// <summary>
+    /// This class exists to strip out sensitive data and provide only what the API
+    /// should pass to endpoints.
+    /// </summary>
+    public class UserJson
     {
         [JsonProperty]
         public string Id { get; set; }
@@ -92,5 +98,8 @@ namespace SpookVooper.Api.Entities
         // Government Stuff
         [JsonProperty]
         public string district { get; set; }
+
+        [JsonProperty]
+        public string Image_Url { get; set; }
     }
 }
