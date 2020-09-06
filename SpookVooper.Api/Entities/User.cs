@@ -11,7 +11,7 @@ namespace SpookVooper.Web.Controllers.API.Json
     /// This class exists to strip out sensitive data and provide only what the API
     /// should pass to endpoints.
     /// </summary>
-    public class UserJson
+    public class User
     {
         [JsonProperty]
         public string Id { get; set; }
