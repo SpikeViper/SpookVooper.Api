@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SpookVooper.Web.Controllers.API.Json
+namespace SpookVooper.Api.Entities
 {
     /// <summary>
     /// This class exists to strip out sensitive data and provide only what the API
