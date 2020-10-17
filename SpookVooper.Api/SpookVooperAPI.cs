@@ -87,9 +87,9 @@ namespace SpookVooper.Api
 
             }
 
-            public static async Task<string> HasDiscordRole(string svid, string role)
+            public static async Task<string> HasDiscordRole(string userid, string role)
             {
-                return await GetData($"https://api.spookvooper.com/user/HasDiscordRole?svid={svid}&role={role}");
+                return await GetData($"https://api.spookvooper.com/user/HasDiscordRole?userid={userid}&role={role}");
 
             }
 
