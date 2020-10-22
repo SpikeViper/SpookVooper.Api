@@ -1,8 +1,0 @@
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\bin\Debug\netcoreapp3.1\SpookVooper.Api.deps.json
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\bin\Debug\netcoreapp3.1\SpookVooper.Api.dll
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\bin\Debug\netcoreapp3.1\SpookVooper.Api.pdb
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.AssemblyInfoInputs.cache
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.AssemblyInfo.cs
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.csproj.CoreCompileInputs.cache
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.dll
-C:\Users\SpikeViper\source\repos\SpookVooper.Api\SpookVooper.Api\obj\Debug\netcoreapp3.1\SpookVooper.Api.pdb
