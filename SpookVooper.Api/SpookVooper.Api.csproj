@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\Pictures\Branding\unity-256.png">
+    <None Include="..\unity-256.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
