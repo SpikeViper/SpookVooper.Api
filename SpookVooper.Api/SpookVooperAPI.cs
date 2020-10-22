@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#pragma warning disable 0168
+using Newtonsoft.Json;
 using SpookVooper.Api.Entities;
 using SpookVooper.Api.Stocks;
 using System;
