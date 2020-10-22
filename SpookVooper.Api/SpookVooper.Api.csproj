@@ -6,7 +6,7 @@
     <Company>VooperMediaLLC</Company>
     <Authors>VooperMediaLLC</Authors>
     <Description>The official API for interacting with SpookVooper systems</Description>
-    <PackageIcon>unity-256.png</PackageIcon>
+    <PackageIcon>unity-256.jpg</PackageIcon>
     <PackageTags>SpookVooper, API, Vooperia, SpikeViper, Economy</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\Pictures\Branding\unity-256.png">
+    <None Include="..\unity-256.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
