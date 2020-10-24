@@ -45,10 +45,12 @@ namespace SpookVooper.Api
                 {
                     user = JsonConvert.DeserializeObject<User>(result);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {result}");
                 }
+                #pragma warning restore 0168
 
                 return user;
             }
@@ -138,10 +140,12 @@ namespace SpookVooper.Api
                 {
                     result = decimal.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch(System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -156,10 +160,12 @@ namespace SpookVooper.Api
                 {
                     result = bool.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -174,10 +180,12 @@ namespace SpookVooper.Api
                 {
                     results = JsonConvert.DeserializeObject<List<string>>(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return results;
             }
@@ -192,10 +200,12 @@ namespace SpookVooper.Api
                 {
                     result = bool.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -226,10 +236,12 @@ namespace SpookVooper.Api
                 {
                     result = decimal.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -242,10 +254,12 @@ namespace SpookVooper.Api
                 {
                    response = await GetData($"https://api.spookvooper.com/eco/SendTransactionByIDS?from={from}&to={to}&amount={amount}&auth={auth}&detail={detail}");
                 }
+                #pragma warning disable 0168
                 catch (VooperException e)
                 {
                     // Ignore HTTP error codes, TaskResult handles it
                 }
+                #pragma warning restore 0168
 
                 TaskResult result = null;
 
@@ -253,10 +267,12 @@ namespace SpookVooper.Api
                 {
                     result = JsonConvert.DeserializeObject<TaskResult>(response);
                 }
+                #pragma warning disable 0168
                 catch(Exception e)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -271,10 +287,12 @@ namespace SpookVooper.Api
                 {
                     result = decimal.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -289,10 +307,12 @@ namespace SpookVooper.Api
                 {
                     results = JsonConvert.DeserializeObject<List<decimal>>(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return results;
             }
@@ -307,10 +327,12 @@ namespace SpookVooper.Api
                 {
                     results = JsonConvert.DeserializeObject<List<int>>(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return results;
             }
@@ -323,10 +345,12 @@ namespace SpookVooper.Api
                 {
                     response = await GetData($"https://api.spookvooper.com/eco/SubmitStockBuy?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
                 }
+                #pragma warning disable 0168
                 catch (VooperException e)
                 {
                     // Ignore HTTP error codes, TaskResult handles it
                 }
+                #pragma warning restore 0168
 
                 TaskResult result = null;
 
@@ -334,10 +358,12 @@ namespace SpookVooper.Api
                 {
                     result = JsonConvert.DeserializeObject<TaskResult>(response);
                 }
+                #pragma warning disable 0168
                 catch (Exception e)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -350,10 +376,12 @@ namespace SpookVooper.Api
                 {
                     response = await GetData($"https://api.spookvooper.com/eco/SubmitStockSell?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
                 }
+                #pragma warning disable 0168
                 catch (VooperException e)
                 {
                     // Ignore HTTP error codes, TaskResult handles it
                 }
+                #pragma warning restore 0168
 
                 TaskResult result = null;
 
@@ -361,10 +389,12 @@ namespace SpookVooper.Api
                 {
                     result = JsonConvert.DeserializeObject<TaskResult>(response);
                 }
+                #pragma warning disable 0168
                 catch (Exception e)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -377,10 +407,12 @@ namespace SpookVooper.Api
                 {
                     response = await GetData($"https://api.spookvooper.com/eco/CancelOrder?orderid={orderid}&accountid={accountid}&auth={auth}");
                 }
+                #pragma warning disable 0168
                 catch (VooperException e)
                 {
                     // Ignore HTTP error codes, TaskResult handles it
                 }
+                #pragma warning restore 0168
 
                 TaskResult result = null;
 
@@ -388,10 +420,12 @@ namespace SpookVooper.Api
                 {
                     result = JsonConvert.DeserializeObject<TaskResult>(response);
                 }
+                #pragma warning disable 0168
                 catch (Exception e)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -406,10 +440,12 @@ namespace SpookVooper.Api
                 {
                     result = decimal.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return result;
             }
@@ -424,10 +460,12 @@ namespace SpookVooper.Api
                 {
                     results = JsonConvert.DeserializeObject<List<OfferInfo>>(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return results;
             }
@@ -442,10 +480,12 @@ namespace SpookVooper.Api
                 {
                     results = JsonConvert.DeserializeObject<List<StockOffer>>(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
 
                 return results;
             }
