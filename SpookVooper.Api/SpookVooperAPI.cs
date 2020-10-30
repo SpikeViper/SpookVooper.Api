@@ -19,10 +19,14 @@ namespace SpookVooper.Api
         public static async Task<string> GetData(string url)
         {
             var httpResponse = await client.GetAsync(url);
-
+            
             if (httpResponse.IsSuccessStatusCode)
             {
                 return await httpResponse.Content.ReadAsStringAsync();
+            }
+            else if (httpResponse.StatusCode.ToString() == "NotFound")
+            {
+                return null;
             }
             else
             {
