@@ -48,6 +48,10 @@ namespace SpookVooper.Api
                 try
                 {
                     user = JsonConvert.DeserializeObject<User>(result);
+                    if (user.Image_Url == "/media/unity-128.png")
+                    {
+                        user.Image_Url = "https://spookvooper.com//media/unity-128.png";
+                    }
                 }
                 #pragma warning disable 0168
                 catch (System.Exception e)
