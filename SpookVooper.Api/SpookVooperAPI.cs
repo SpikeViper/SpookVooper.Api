@@ -97,10 +97,12 @@ namespace SpookVooper.Api
                 {
                     return bool.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
             }
 
             public class DiscordRoleInfo
