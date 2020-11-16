@@ -19,10 +19,14 @@ namespace SpookVooper.Api
         public static async Task<string> GetData(string url)
         {
             var httpResponse = await client.GetAsync(url);
-
+            
             if (httpResponse.IsSuccessStatusCode)
             {
                 return await httpResponse.Content.ReadAsStringAsync();
+            }
+            else if (httpResponse.StatusCode.ToString() == "NotFound")
+            {
+                return null;
             }
             else
             {
@@ -68,31 +72,35 @@ namespace SpookVooper.Api
             public static async Task<string> GetSVIDFromDiscord(ulong discordid)
             {
                 return await GetData($"https://api.spookvooper.com/user/GetSVIDFromDiscord?discordid={discordid}");
-
             }
 
             public static async Task<string> GetUsernameFromDiscord(ulong discordid)
             {
                 return await GetData($"https://api.spookvooper.com/user/GetUsernameFromDiscord?discordid={discordid}");
-
             }
 
             public static async Task<string> GetUsernameFromMinecraft(string minecraftid)
             {
                 return await GetData($"https://api.spookvooper.com/user/GetUsernameFromMinecraft?minecraftid={minecraftid}");
-
             }
 
             public static async Task<string> GetSVIDFromMinecraft(string minecraftid)
             {
                 return await GetData($"https://api.spookvooper.com/user/GetSVIDFromMinecraft?minecraftid={minecraftid}");
-
             }
 
-            public static async Task<string> HasDiscordRole(string userid, string role)
+            public static async Task<bool> HasDiscordRole(string userid, string role)
             {
-                return await GetData($"https://api.spookvooper.com/user/HasDiscordRole?userid={userid}&role={role}");
+                string response = await GetData($"https://api.spookvooper.com/user/HasDiscordRole?userid={userid}&role={role}");
 
+                try
+                {
+                    return bool.Parse(response);
+                }
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
             }
 
             public class DiscordRoleInfo

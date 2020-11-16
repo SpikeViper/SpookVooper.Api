@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.0.7</Version>
+    <Version>1.1.0</Version>
     <Company>VooperMediaLLC</Company>
     <Authors>VooperMediaLLC</Authors>
     <Description>The official API for interacting with SpookVooper systems</Description>
