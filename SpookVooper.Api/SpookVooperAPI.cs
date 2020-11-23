@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
+using SpookVooper.Api.Economy.Stocks;
 using SpookVooper.Api.Entities;
-using SpookVooper.Api.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
