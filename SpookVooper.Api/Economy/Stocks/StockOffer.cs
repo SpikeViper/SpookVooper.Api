@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace SpookVooper.Api.Stocks
+namespace SpookVooper.Api.Economy.Stocks
 {
     /// <summary>
     /// Stock offers are the object used to represent open stock trades.
@@ -16,6 +16,9 @@ namespace SpookVooper.Api.Stocks
         [Key]
         [JsonProperty("Id")]
         public string Id { get; set; }
+
+        [JsonProperty("Owner_Name")]
+        public string Owner_Name { get; set; }
 
         // Owner of this offer
         [JsonProperty("Owner_Id")]
