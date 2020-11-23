@@ -19,10 +19,14 @@ namespace SpookVooper.Api
         public static async Task<string> GetData(string url)
         {
             var httpResponse = await client.GetAsync(url);
-
+            
             if (httpResponse.IsSuccessStatusCode)
             {
                 return await httpResponse.Content.ReadAsStringAsync();
+            }
+            else if (httpResponse.StatusCode.ToString() == "NotFound")
+            {
+                return null;
             }
             else
             {
@@ -44,6 +48,10 @@ namespace SpookVooper.Api
                 try
                 {
                     user = JsonConvert.DeserializeObject<User>(result);
+                    if (user.Image_Url == "/media/unity-128.png")
+                    {
+                        user.Image_Url = "https://spookvooper.com//media/unity-128.png";
+                    }
                 }
                 #pragma warning disable 0168
                 catch (System.Exception e)
@@ -93,10 +101,12 @@ namespace SpookVooper.Api
                 {
                     return bool.Parse(response);
                 }
+                #pragma warning disable 0168
                 catch (System.Exception e)
                 {
                     throw new VooperException($"Malformed response: {response}");
                 }
+                #pragma warning restore 0168
             }
 
             public class DiscordRoleInfo
