@@ -231,7 +231,7 @@ namespace SpookVooper.Api
 
             public static async Task<string> GetName(string svid)
             {
-                return await GetData($"https://api.spookvooper.com/group/GetName?svid={svid}");
+                return await GetData($"https://api.spookvooper.com/group/GetName?svid={svid}"); 
             }
         }
 
