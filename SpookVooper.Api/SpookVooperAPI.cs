@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using Newtonsoft.Json;
 using SpookVooper.Api.Economy.Stocks;
 using SpookVooper.Api.Entities;
 using System;
@@ -232,6 +233,26 @@ namespace SpookVooper.Api
             public static async Task<string> GetName(string svid)
             {
                 return await GetData($"https://api.spookvooper.com/group/GetName?svid={svid}");
+            }
+
+            public static async Task<int> GetDaysSinceLastMove(string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/group/GetDaysSinceLastMove?svid={svid}");
+
+                int result = -1;
+
+                try
+                {
+                    result = int.Parse(response);
+                }
+#pragma warning disable 0168
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+#pragma warning restore 0168
+
+                return result;
             }
         }
 

@@ -142,7 +142,5 @@ namespace SpookVooper.Api.Entities
 
             return (int)DateTime.Now.Subtract((DateTime)district_move_date).TotalDays;
         }
-
-        
     }
 }
