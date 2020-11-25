@@ -9,7 +9,7 @@ using SpookVooper.Api.Entities;
 
 namespace SpookVooper.Api.Economy.Stocks
 {
-    public class StockObject : ITradeable
+    public class StockObject
     {
         // Stock ID is NOT the ticker, it is a UUID for this "stack" of stock
         [Key]
@@ -27,5 +27,18 @@ namespace SpookVooper.Api.Economy.Stocks
         // The name of the stock item
         public string Name { get { return Ticker + " Stock"; } }
 
+        public decimal GetValue()
+        {
+            return SpookVooperAPI.Economy.GetStockValue(Ticker).Result;
+        }
+
+        public async Task<decimal> GetValueAsync()
+        {
+            return await SpookVooperAPI.Economy.GetStockValue(Ticker);
+        }
+        public bool IsOwner(Entity entity)
+        {
+            return Owner_Id == entity.Id;
+        }
     }
 }
