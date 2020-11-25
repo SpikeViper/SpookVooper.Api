@@ -4,143 +4,191 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace SpookVooper.Api.Entities
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class User : IdentityUser, Entity
+    public class User : Entity
     {
-        // Svid
-        [JsonProperty]
-        public override string Id { get => base.Id; set => base.Id = value; }
+        /// <summary>
+        /// The core SVID for this user
+        /// </summary>
+        public string Id { get; set; }
 
-        [JsonProperty]
-        public override string UserName { get => base.UserName; set => base.UserName = value; }
+        /// <summary>
+        /// The key used to authenticate requests for this user
+        /// </summary>
+        public string Auth_Key { get; set; }
 
-        // Other accounts
-        [JsonProperty]
-        public string twitch_id { get; set; }
-
-        [JsonProperty]
-        public ulong? discord_id { get; set; }
-
-        // Forum stuff
-        [JsonProperty]
-        public int post_likes { get; set; }
-
-        [JsonProperty]
-        public int comment_likes { get; set; }
-
-        // NationStates nation
-        [JsonProperty]
-        public string nationstate { get; set; }
-
-        // Description
-        [JsonProperty]
-        public string description { get; set; }
-
-        // Credits
-        [JsonProperty]
-        [Display(Name = "Credits")]
-        public decimal Credits { get; set; }
-
-        // API Key
-        [JsonIgnore]
-        public string Api_Key { get; set; }
-
-        [JsonProperty]
-        public int api_use_count { get; set; }
-
-        [JsonProperty]
-        public string minecraft_id { get; set; }
-
-        public string Name { get { return UserName; } }
-
-        // Twitch stuff
-        [JsonProperty]
-        public int twitch_last_message_minute { get; set; }
-
-        [JsonProperty]
-        public int twitch_message_xp { get; set; }
-
-        [JsonProperty]
-        public int twitch_messages { get; set; }
-
-        // Discord stuff
-        [JsonProperty]
-        [Display(Name = "Commends")]
-        public int discord_commends { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Commends Sent")]
-        public int discord_commends_sent { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Last Commend Hour")]
-        public int discord_last_commend_hour { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Last Commend Message (ID)")]
-        public ulong discord_last_commend_message { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Discord Message XP")]
-        public int discord_message_xp { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Discord Messages")]
-        public int discord_message_count { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Last Message Minute")]
-        public int discord_last_message_minute { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Last Message Time")]
-        public DateTime Discord_Last_Message_Time { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Warnings")]
-        public int discord_warning_count { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Bans")]
-        public int discord_ban_count { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Kicks")]
-        public int discord_kick_count { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "Game XP")]
-        public int discord_game_xp { get; set; }
-
-        // Government Stuff
-        [JsonProperty]
-        [Display(Name = "District")]
-        public string district { get; set; }
-
-        [JsonProperty]
-        [Display(Name = "District Move Date")]
-        public DateTime? district_move_date { get; set; }
-
-        public string Image_Url { get; set; }
-
-        public decimal Credits_Invested { get; set; }
-
-        public int GetTotalXP()
+        /// <summary>
+        /// Creates a user object using the SVID and optional key for priviliged actions
+        /// </summary>
+        public User(string svid, string auth_key = null)
         {
-            return post_likes + comment_likes + (twitch_message_xp * 4) + (discord_commends * 5) + (discord_message_xp * 2) + (discord_game_xp / 100);
+            if (!svid.StartsWith("u-"))
+            {
+                throw new VooperException("Svid should start with a u- for a user object!");
+            }
+
+            Id = svid;
+            Auth_Key = auth_key;
         }
 
-        // DISCORD HELPER METHODS
-
-        public int GetDaysSinceLastMove()
+        public void SetAuthKey(string auth)
         {
-            if (district_move_date == null) return int.MaxValue;
+            Auth_Key = auth;
+        }
 
-            return (int)DateTime.Now.Subtract((DateTime)district_move_date).TotalDays;
+        /// <summary>
+        /// Returns all available data about this user at the moment the snapshot is called
+        /// </summary>
+        public async Task<UserSnapshot> GetSnapshot()
+        {
+            string json = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUser?svid={Id}");
+
+            UserSnapshot snapshot = null;
+
+            try { 
+                snapshot = JsonConvert.DeserializeObject<UserSnapshot>(json);
+            }
+#pragma warning disable 0168
+            catch (System.Exception e)
+            {
+                throw new VooperException($"Malformed response: {json}");
+            }
+#pragma warning restore 0168
+
+            return snapshot;
+        }
+
+        public async Task<string> GetUsername()
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUsername?svid={Id}");
+        }
+
+        public async Task<bool> HasDiscordRole(string role)
+        {
+            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/HasDiscordRole?userid={Id}&role={role}");
+
+            try
+            {
+                return bool.Parse(response);
+            }
+#pragma warning disable 0168
+            catch (System.Exception e)
+            {
+                throw new VooperException($"Malformed response: {response}");
+            }
+#pragma warning restore 0168
+        }
+
+        public async Task<List<DiscordRoleInfo>> GetDiscordRoles()
+        {
+            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetDiscordRoles?svid={Id}");
+
+            return JsonConvert.DeserializeObject<List<DiscordRoleInfo>>(response);
+        }
+
+        public async Task<int> GetDaysSinceLastMove()
+        {
+            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetDaysSinceLastMove?svid={Id}");
+
+            int result = int.MaxValue;
+
+            int.TryParse(response, out result);
+
+            return result;
+        }
+
+        public async Task<decimal> GetBalance()
+        {
+            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/eco/GetBalance?svid={Id}");
+
+            decimal result = 0m;
+
+            try
+            {
+                result = decimal.Parse(response);
+            }
+#pragma warning disable 0168
+            catch (System.Exception e)
+            {
+                throw new VooperException($"Malformed response: {response}");
+            }
+#pragma warning restore 0168
+
+            return result;
+        }
+
+        public async Task<TaskResult> SendCredits(decimal amount, User to, string description)
+        {
+            return await SendCredits(amount, to.Id, description);
+        }
+
+        public async Task<TaskResult> SendCredits(decimal amount, string to, string description)
+        {
+            string response = "";
+
+            try
+            {
+                response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/eco/SendTransactionByIDS?from={Id}&to={to}&amount={amount}&auth={Auth_Key}&detail={description}");
+            }
+#pragma warning disable 0168
+            catch (VooperException e)
+            {
+                // Ignore HTTP error codes, TaskResult handles it
+            }
+#pragma warning restore 0168
+
+            TaskResult result = null;
+
+            try
+            {
+                result = JsonConvert.DeserializeObject<TaskResult>(response);
+            }
+#pragma warning disable 0168
+            catch (Exception e)
+            {
+                result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
+            }
+#pragma warning restore 0168
+
+            return result;
+        }
+
+        public class DiscordRoleInfo
+        {
+            [JsonProperty]
+            public string Name { get; set; }
+
+            [JsonProperty]
+            public ulong Id { get; set; }
+        }
+
+        // Static methods
+
+        public static async Task<string> GetSVIDFromUsername(string username)
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetSVIDFromUsername?username={username}");
+        }
+
+        public static async Task<string> GetSVIDFromDiscord(ulong discordid)
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetSVIDFromDiscord?discordid={discordid}");
+        }
+
+        public static async Task<string> GetUsernameFromDiscord(ulong discordid)
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUsernameFromDiscord?discordid={discordid}");
+        }
+
+        public static async Task<string> GetUsernameFromMinecraft(string minecraftid)
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUsernameFromMinecraft?minecraftid={minecraftid}");
+        }
+
+        public static async Task<string> GetSVIDFromMinecraft(string minecraftid)
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetSVIDFromMinecraft?minecraftid={minecraftid}");
         }
     }
 }
