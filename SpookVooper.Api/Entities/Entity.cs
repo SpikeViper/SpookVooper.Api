@@ -14,6 +14,6 @@ namespace SpookVooper.Api.Entities
 
         public Task<TaskResult> SendCredits(decimal amount, string to, string description);
 
-        public Task<TaskResult> SendCredits(decimal amount, User to, string description);
+        public Task<TaskResult> SendCredits(decimal amount, Entity to, string description);
     }
 }

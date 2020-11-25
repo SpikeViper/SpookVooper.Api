@@ -119,7 +119,7 @@ namespace SpookVooper.Api.Entities
             return result;
         }
 
-        public async Task<TaskResult> SendCredits(decimal amount, User to, string description)
+        public async Task<TaskResult> SendCredits(decimal amount, Entity to, string description)
         {
             return await SendCredits(amount, to.Id, description);
         }
