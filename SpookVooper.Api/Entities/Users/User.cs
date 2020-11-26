@@ -81,11 +81,11 @@ namespace SpookVooper.Api.Entities
 #pragma warning restore 0168
         }
 
-        public async Task<List<DiscordRoleInfo>> GetDiscordRoles()
+        public async Task<List<DiscordRoleData>> GetDiscordRoles()
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetDiscordRoles?svid={Id}");
 
-            return JsonConvert.DeserializeObject<List<DiscordRoleInfo>>(response);
+            return JsonConvert.DeserializeObject<List<DiscordRoleData>>(response);
         }
 
         public async Task<int> GetDaysSinceLastMove()
@@ -153,15 +153,6 @@ namespace SpookVooper.Api.Entities
 #pragma warning restore 0168
 
             return result;
-        }
-
-        public class DiscordRoleInfo
-        {
-            [JsonProperty]
-            public string Name { get; set; }
-
-            [JsonProperty]
-            public ulong Id { get; set; }
         }
 
         // Static methods
