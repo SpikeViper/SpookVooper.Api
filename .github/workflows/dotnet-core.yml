@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+    name: 🏗 Build
     runs-on: ubuntu-latest
 
     steps:
@@ -23,3 +23,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: 🧪 Test
       run: dotnet test --no-restore --verbosity normal
+    - name: 📲 Publish to NuGet
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+        PROJECT_FILE_PATH: SpookVooper.Api/SpookVooper.Api.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
