@@ -1,5 +1,7 @@
 # SpookVooper.Api
 
+![.NET Core](https://github.com/SpikeViper/SpookVooper.Api/workflows/.NET%20Core/badge.svg) ![CodeQL](https://github.com/SpikeViper/SpookVooper.Api/workflows/CodeQL/badge.svg)
+
 The Open-Source official API for SpookVooper
 
 ## What is this?
