@@ -39,9 +39,17 @@ namespace SpookVooper.Api.Entities
         }
 
         /// <summary>
-        /// Returns all available data about this user at the moment the snapshot is called
+        /// Returns all available data about this user at the moment the snapshot is called (async)
         /// </summary>
-        public async Task<UserSnapshot> GetSnapshot()
+        public UserSnapshot GetSnapshot()
+        {
+            return GetSnapshotAsync().Result;
+        }
+
+        /// <summary>
+        /// Returns all available data about this user at the moment the snapshot is called (async)
+        /// </summary>
+        public async Task<UserSnapshot> GetSnapshotAsync()
         {
             string json = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUser?svid={Id}");
 
@@ -59,13 +67,22 @@ namespace SpookVooper.Api.Entities
 
             return snapshot;
         }
+        public string GetUsername()
+        {
+            return GetUsernameAsync().Result;
+        }
 
-        public async Task<string> GetUsername()
+        public async Task<string> GetUsernameAsync()
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUsername?svid={Id}");
         }
 
-        public async Task<bool> HasDiscordRole(string role)
+        public bool HasDiscordRole(string role)
+        {
+            return HasDiscordRoleAsync(role).Result;
+        }
+
+        public async Task<bool> HasDiscordRoleAsync(string role)
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/HasDiscordRole?userid={Id}&role={role}");
 
@@ -81,14 +98,24 @@ namespace SpookVooper.Api.Entities
 #pragma warning restore 0168
         }
 
-        public async Task<List<DiscordRoleData>> GetDiscordRoles()
+        public List<DiscordRoleData> GetDiscordRoles()
+        {
+            return GetDiscordRolesAsync().Result;
+        }
+
+        public async Task<List<DiscordRoleData>> GetDiscordRolesAsync()
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetDiscordRoles?svid={Id}");
 
             return JsonConvert.DeserializeObject<List<DiscordRoleData>>(response);
         }
 
-        public async Task<int> GetDaysSinceLastMove()
+        public int GetDaysSinceLastMove()
+        {
+            return GetDaysSinceLastMoveAsync().Result;
+        }
+
+        public async Task<int> GetDaysSinceLastMoveAsync()
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetDaysSinceLastMove?svid={Id}");
 
@@ -99,7 +126,12 @@ namespace SpookVooper.Api.Entities
             return result;
         }
 
-        public async Task<decimal> GetBalance()
+        public decimal GetBalance()
+        {
+            return GetBalanceAsync().Result;
+        }
+
+        public async Task<decimal> GetBalanceAsync()
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/eco/GetBalance?svid={Id}");
 
@@ -119,12 +151,22 @@ namespace SpookVooper.Api.Entities
             return result;
         }
 
-        public async Task<TaskResult> SendCredits(decimal amount, Entity to, string description)
+        public TaskResult SendCredits(decimal amount, string to, string description)
         {
-            return await SendCredits(amount, to.Id, description);
+            return SendCreditsAsync(amount, to, description).Result;
         }
 
-        public async Task<TaskResult> SendCredits(decimal amount, string to, string description)
+        public TaskResult SendCredits(decimal amount, Entity to, string description)
+        {
+            return SendCreditsAsync(amount, to, description).Result;
+        }
+
+        public async Task<TaskResult> SendCreditsAsync(decimal amount, Entity to, string description)
+        {
+            return await SendCreditsAsync(amount, to.Id, description);
+        }
+
+        public async Task<TaskResult> SendCreditsAsync(decimal amount, string to, string description)
         {
             string response = "";
 
@@ -157,27 +199,52 @@ namespace SpookVooper.Api.Entities
 
         // Static methods
 
-        public static async Task<string> GetSVIDFromUsername(string username)
+        public static string GetSVIDFromUsername(string username)
+        {
+            return GetSVIDFromUsernameAsync(username).Result;
+        }
+
+        public static async Task<string> GetSVIDFromUsernameAsync(string username)
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetSVIDFromUsername?username={username}");
         }
 
-        public static async Task<string> GetSVIDFromDiscord(ulong discordid)
+        public static string GetSVIDFromDiscord(ulong discordid)
+        {
+            return GetSVIDFromDiscordAsync(discordid).Result;
+        }
+
+        public static async Task<string> GetSVIDFromDiscordAsync(ulong discordid)
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetSVIDFromDiscord?discordid={discordid}");
         }
 
-        public static async Task<string> GetUsernameFromDiscord(ulong discordid)
+        public static string GetUsernameFromDiscord(ulong discordid)
+        {
+            return GetUsernameFromDiscordAsync(discordid).Result;
+        }
+
+        public static async Task<string> GetUsernameFromDiscordAsync(ulong discordid)
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUsernameFromDiscord?discordid={discordid}");
         }
 
-        public static async Task<string> GetUsernameFromMinecraft(string minecraftid)
+        public static string GetUsernameFromMinecraft(string minecraftid)
+        {
+            return GetUsernameFromMinecraftAsync(minecraftid).Result;
+        }
+
+        public static async Task<string> GetUsernameFromMinecraftAsync(string minecraftid)
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetUsernameFromMinecraft?minecraftid={minecraftid}");
         }
 
-        public static async Task<string> GetSVIDFromMinecraft(string minecraftid)
+        public static string GetSVIDFromMinecraft(string minecraftid)
+        {
+            return GetSVIDFromMinecraftAsync(minecraftid).Result;
+        }
+
+        public static async Task<string> GetSVIDFromMinecraftAsync(string minecraftid)
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/user/GetSVIDFromMinecraft?minecraftid={minecraftid}");
         }

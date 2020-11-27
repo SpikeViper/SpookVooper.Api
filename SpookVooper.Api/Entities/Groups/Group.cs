@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace SpookVooper.Api.Entities.Groups
@@ -41,7 +42,15 @@ namespace SpookVooper.Api.Entities.Groups
         /// <summary>
         /// Returns all available data about this user at the moment the snapshot is called
         /// </summary>
-        public async Task<GroupSnapshot> GetSnapshot()
+        public GroupSnapshot GetSnapshot()
+        {
+            return GetSnapshotAsync().Result;
+        }
+
+        /// <summary>
+        /// Returns all available data about this user at the moment the snapshot is called (async)
+        /// </summary>
+        public async Task<GroupSnapshot> GetSnapshotAsync()
         {
             string json = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetGroup?svid={Id}");
 
@@ -61,7 +70,12 @@ namespace SpookVooper.Api.Entities.Groups
             return snapshot;
         }
 
-        public async Task<decimal> GetBalance()
+        public decimal GetBalance()
+        {
+            return GetBalanceAsync().Result;
+        }
+
+        public async Task<decimal> GetBalanceAsync()
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/eco/GetBalance?svid={Id}");
 
@@ -81,7 +95,12 @@ namespace SpookVooper.Api.Entities.Groups
             return result;
         }
 
-        public async Task<List<string>> GetGroupMemberIDs()
+        public List<string> GetGroupMemberIDs()
+        {
+            return GetGroupMemberIDsAsync().Result;
+        }
+
+        public async Task<List<string>> GetGroupMemberIDsAsync()
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetGroupMembers?svid={Id}");
 
@@ -101,7 +120,12 @@ namespace SpookVooper.Api.Entities.Groups
             return results;
         }
 
-        public async Task<bool> HasGroupPermission(string userSVID, string permission)
+        public bool HasGroupPermission(string userSVID, string permission)
+        {
+            return HasGroupPermissionAsync(userSVID, permission).Result;
+        }
+
+        public async Task<bool> HasGroupPermissionAsync(string userSVID, string permission)
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/HasGroupPermission?svid={Id}&usersvid={userSVID}&permission={permission}");
 
@@ -121,14 +145,24 @@ namespace SpookVooper.Api.Entities.Groups
             return result;
         }
 
-        public async Task<string> GetName()
+        public string GetName()
+        {
+            return GetNameAsync().Result;
+        }
+
+        public async Task<string> GetNameAsync()
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetName?svid={Id}");
         }
 
         // Static methods
 
-        public static async Task<bool> DoesGroupExist(string svid)
+        public static bool DoesGroupExist(string svid)
+        {
+            return DoesGroupExistAsync(svid).Result;
+        }
+
+        public static async Task<bool> DoesGroupExistAsync(string svid)
         {
             string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/DoesGroupExist?svid={svid}");
 
@@ -148,17 +182,32 @@ namespace SpookVooper.Api.Entities.Groups
             return result;
         }
 
-        public static async Task<string> GetSVIDFromName(string name)
+        public static string GetSVIDFromName(string name)
+        {
+            return GetSVIDFromNameAsync(name).Result;
+        }
+
+        public static async Task<string> GetSVIDFromNameAsync(string name)
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetSVIDFromName?name={name}");
         }
 
-        public async Task<TaskResult> SendCredits(decimal amount, Entity to, string description)
+        public TaskResult SendCredits(decimal amount, Entity to, string description)
         {
-            return await SendCredits(amount, to.Id, description);
+            return SendCreditsAsync(amount, to, description).Result;
         }
 
-        public async Task<TaskResult> SendCredits(decimal amount, string to, string description)
+        public async Task<TaskResult> SendCreditsAsync(decimal amount, Entity to, string description)
+        {
+            return await SendCreditsAsync(amount, to.Id, description);
+        }
+
+        public TaskResult SendCredits(decimal amount, string to, string description)
+        {
+            return SendCreditsAsync(amount, to, description).Result;
+        }
+
+        public async Task<TaskResult> SendCreditsAsync(decimal amount, string to, string description)
         {
             string response = "";
 

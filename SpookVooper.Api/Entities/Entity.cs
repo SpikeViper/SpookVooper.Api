@@ -10,10 +10,16 @@ namespace SpookVooper.Api.Entities
     {
         public string Id { get; }
 
-        public Task<decimal> GetBalance();
+        public decimal GetBalance();
 
-        public Task<TaskResult> SendCredits(decimal amount, string to, string description);
+        public Task<decimal> GetBalanceAsync();
 
-        public Task<TaskResult> SendCredits(decimal amount, Entity to, string description);
+        public TaskResult SendCredits(decimal amount, string to, string description);
+
+        public TaskResult SendCredits(decimal amount, Entity to, string description);
+
+        public Task<TaskResult> SendCreditsAsync(decimal amount, string to, string description);
+
+        public Task<TaskResult> SendCreditsAsync(decimal amount, Entity to, string description);
     }
 }

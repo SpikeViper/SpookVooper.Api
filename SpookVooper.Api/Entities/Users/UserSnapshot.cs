@@ -14,6 +14,9 @@ namespace SpookVooper.Api.Entities
         [JsonProperty]
         public string UserName { get; set; }
 
+        [JsonProperty]
+        public string Name { get; set; }
+
         // Other accounts
         [JsonProperty]
         public string twitch_id { get; set; }
