@@ -16,24 +16,24 @@ namespace SpookVooper.Api
             User brendan = new User("u-02c977bb-0a6c-4eb2-bfca-5e9101025aaf");
 
             // Print their names and balances
-            Console.WriteLine($"{spike.GetUsername()} has ¢{spike.GetBalance()}");
-            Console.WriteLine($"{brendan.GetUsername()} has ¢{brendan.GetBalance()}");
+            Console.WriteLine($"{await spike.GetUsernameAsync()} has ¢{spike.GetBalanceAsync()}");
+            Console.WriteLine($"{await brendan.GetUsernameAsync()} has ¢{brendan.GetBalanceAsync()}");
 
             // Set the key for spike *can also be done as a second argument during creation*
             spike.SetAuthKey("this-is-a-key");
 
             // Have spike send a transaction to brendan
-            TaskResult result = await spike.SendCredits(100, brendan, "Friend payment");
+            TaskResult result = await spike.SendCreditsAsync(100, brendan, "Friend payment");
 
             // Log the result of the transaction
             Console.WriteLine(result.Info);
 
             // Need more data?
             // Use "snapshots" to get a large yet non-updating set of data from a group or user
-            UserSnapshot snapShot = await spike.GetSnapshot();
+            UserSnapshot snapShot = await spike.GetSnapshotAsync();
             int messageCount = snapShot.discord_message_count;
 
-            Console.WriteLine($"{spike.GetUsername()} sent {messageCount} messages!");
+            Console.WriteLine($"{await spike.GetUsernameAsync()} sent {messageCount} messages!");
         }
     }
 }
