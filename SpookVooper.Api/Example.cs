@@ -9,7 +9,7 @@ namespace SpookVooper.Api
     /// </summary>
     public class Example
     {
-        public async Task Main(string[] args)
+        static async Task Main(string[] args)
         {
             // Define two users with SVIDs
             User spike = new User("u-2a0057e6-356a-4a49-b825-c37796cb7bd9");
