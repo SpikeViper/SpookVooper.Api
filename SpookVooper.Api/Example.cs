@@ -16,8 +16,8 @@ namespace SpookVooper.Api
             User brendan = new User("u-02c977bb-0a6c-4eb2-bfca-5e9101025aaf");
 
             // Print their names and balances
-            Console.WriteLine($"{spike.GetUsername()} has ¢{spike.GetBalance()}");
-            Console.WriteLine($"{brendan.GetUsername()} has ¢{brendan.GetBalance()}");
+            Console.WriteLine($"{await spike.GetUsername()} has ¢{await spike.GetBalance()}");
+            Console.WriteLine($"{await brendan.GetUsername()} has ¢{await brendan.GetBalance()}");
 
             // Set the key for spike *can also be done as a second argument during creation*
             spike.SetAuthKey("this-is-a-key");
@@ -33,7 +33,7 @@ namespace SpookVooper.Api
             UserSnapshot snapShot = await spike.GetSnapshot();
             int messageCount = snapShot.discord_message_count;
 
-            Console.WriteLine($"{spike.GetUsername()} sent {messageCount} messages!");
+            Console.WriteLine($"{await spike.GetUsername()} sent {messageCount} messages!");
         }
     }
 }
