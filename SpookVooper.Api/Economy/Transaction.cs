@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SpookVooper.Api.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,5 +30,26 @@ namespace SpookVooper.Api.Economy
         public ApplicableTax Tax;
         [JsonProperty("Result")]
         private TaskResult Result;
+
+        public User GetSender() {
+
+            if (FromAccount == null || string.IsNullOrWhiteSpace(FromAccount))
+            {
+                return null;
+            }
+
+            return new User(FromAccount);
+        }
+
+        public User GetReciever()
+        {
+
+            if (ToAccount == null || string.IsNullOrWhiteSpace(ToAccount))
+            {
+                return null;
+            }
+
+            return new User(ToAccount);
+        }
     }
 }
