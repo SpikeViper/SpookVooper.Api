@@ -46,7 +46,7 @@ namespace SpookVooper.Api.Economy
             }
             catch (System.Exception e)
             {
-                Console.WriteLine("En error occured while opening the SignalR for the Transaction hub");
+                Console.WriteLine("An error occured while opening the SignalR for the Transaction hub");
                 Console.WriteLine(e.Message);
             }
         }
