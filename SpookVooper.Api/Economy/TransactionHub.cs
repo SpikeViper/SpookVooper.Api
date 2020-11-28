@@ -17,7 +17,7 @@ namespace SpookVooper.Api.Economy
     /// <summary>
     /// A class used to connect to and use the transaction hub system
     /// </summary>
-    class TransactionHub
+    public class TransactionHub
     {
         public HubConnection connection;
 
