@@ -190,7 +190,7 @@ namespace SpookVooper.Api.Entities
 #pragma warning disable 0168
             catch (Exception e)
             {
-                result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
+                result = new TaskResult(false, response);
             }
 #pragma warning restore 0168
 

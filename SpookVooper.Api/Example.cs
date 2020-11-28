@@ -1,5 +1,7 @@
-﻿using SpookVooper.Api.Entities;
+﻿using SpookVooper.Api.Economy;
+using SpookVooper.Api.Entities;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SpookVooper.Api
@@ -9,15 +11,15 @@ namespace SpookVooper.Api
     /// </summary>
     public class Example
     {
-        public async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // Define two users with SVIDs
             User spike = new User("u-2a0057e6-356a-4a49-b825-c37796cb7bd9");
             User brendan = new User("u-02c977bb-0a6c-4eb2-bfca-5e9101025aaf");
 
             // Print their names and balances
-            Console.WriteLine($"{await spike.GetUsernameAsync()} has ¢{spike.GetBalanceAsync()}");
-            Console.WriteLine($"{await brendan.GetUsernameAsync()} has ¢{brendan.GetBalanceAsync()}");
+            Console.WriteLine($"{await spike.GetUsernameAsync()} has ¢{await spike.GetBalanceAsync()}");
+            Console.WriteLine($"{await brendan.GetUsernameAsync()} has ¢{await brendan.GetBalanceAsync()}");
 
             // Set the key for spike *can also be done as a second argument during creation*
             spike.SetAuthKey("this-is-a-key");
@@ -34,6 +36,28 @@ namespace SpookVooper.Api
             int messageCount = snapShot.discord_message_count;
 
             Console.WriteLine($"{await spike.GetUsernameAsync()} sent {messageCount} messages!");
+
+            // Create transaction hub object
+            TransactionHub tHub = new TransactionHub();
+
+            // Hook transaction event to method
+            tHub.OnTransaction += HandleTransaction;
+
+            // Prevent process death
+            while (true)
+            {
+                //Console.WriteLine("Test");
+                //Console.WriteLine(tHub.connection.State);
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static async void HandleTransaction(Transaction transaction)
+        {
+            User sender = new User(transaction.FromAccount);
+            User reciever = new User(transaction.ToAccount);
+
+            Console.WriteLine($"{await sender.GetUsernameAsync()} sent ¢{transaction.Amount} to {await reciever.GetUsernameAsync()}");
         }
     }
 }
