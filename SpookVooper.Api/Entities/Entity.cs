@@ -3,23 +3,95 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace SpookVooper.Api.Entities
 {
-    public interface Entity
+    public class Entity
     {
-        public string Id { get; }
+        public string Id { get; set; }
 
-        public decimal GetBalance();
+        public string Auth_Key { get; set; }
 
-        public Task<decimal> GetBalanceAsync();
+        public Entity(string svid, string auth_key){
+            this.Id = svid;
+            this.Auth_Key = auth_key;
 
-        public TaskResult SendCredits(decimal amount, string to, string description);
+            if (!svid.StartsWith("u-") && !svid.StartsWith("g-"))
+            {
+                throw new VooperException("Svid should start with a u- or g- for an entity object!");
+            }
+        }
 
-        public TaskResult SendCredits(decimal amount, Entity to, string description);
+        public decimal GetBalance()
+        {
+            return GetBalanceAsync().Result;
+        }
 
-        public Task<TaskResult> SendCreditsAsync(decimal amount, string to, string description);
+        public async Task<decimal> GetBalanceAsync()
+        {
+            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/eco/GetBalance?svid={Id}");
 
-        public Task<TaskResult> SendCreditsAsync(decimal amount, Entity to, string description);
+            decimal result = 0m;
+
+            try
+            {
+                result = decimal.Parse(response);
+            }
+#pragma warning disable 0168
+            catch (System.Exception e)
+            {
+                throw new VooperException($"Malformed response: {response}");
+            }
+#pragma warning restore 0168
+
+            return result;
+        }
+
+        public TaskResult SendCredits(decimal amount, string to, string description)
+        {
+            return SendCreditsAsync(amount, to, description).Result;
+        }
+
+        public TaskResult SendCredits(decimal amount, Entity to, string description)
+        {
+            return SendCreditsAsync(amount, to, description).Result;
+        }
+
+        public async Task<TaskResult> SendCreditsAsync(decimal amount, Entity to, string description)
+        {
+            return await SendCreditsAsync(amount, to.Id, description);
+        }
+
+        public async Task<TaskResult> SendCreditsAsync(decimal amount, string to, string description)
+        {
+            string response = "";
+
+            try
+            {
+                response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/eco/SendTransactionByIDS?from={Id}&to={to}&amount={amount}&auth={Auth_Key}&detail={description}");
+            }
+#pragma warning disable 0168
+            catch (VooperException e)
+            {
+                // Ignore HTTP error codes, TaskResult handles it
+            }
+#pragma warning restore 0168
+
+            TaskResult result = null;
+
+            try
+            {
+                result = JsonConvert.DeserializeObject<TaskResult>(response);
+            }
+#pragma warning disable 0168
+            catch (Exception e)
+            {
+                result = new TaskResult(false, response);
+            }
+#pragma warning restore 0168
+
+            return result;
+        }
     }
 }
