@@ -36,7 +36,7 @@ namespace SpookVooper.Api.Entities.Groups
 
         public class GroupTypes
         {
-            public const string None = "Groups", Political = "Parties", Company = "Companies", News = "News";
+            public const string None = "Groups", Political = "Parties", Company = "Companies", News = "News", District = "District";
         }
 
         /// <summary>

@@ -7,20 +7,12 @@ using System.Threading.Tasks;
 
 namespace SpookVooper.Api.Entities
 {
-    public class GroupSnapshot
+    public class GroupSnapshot : EntitySnapshot
     {
-        [JsonProperty]
-        public string Id { get; set; }
-        [JsonProperty]
-        public string Name { get; set; }
         [JsonProperty]
         public string Description { get; set; }
         [JsonProperty]
         public bool Open { get; set; }
-        [JsonProperty]
-        public decimal Credits { get; set; }
-        [JsonProperty]
-        public string Image_Url { get; set; }
         [JsonProperty]
         public string Group_Category { get; set; }
         [JsonProperty]

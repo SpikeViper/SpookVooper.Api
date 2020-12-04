@@ -13,5 +13,6 @@ namespace SpookVooper.Api.Government
         public string Flag_Url { get; set; }
         public string Description { get; set; }
         public string Senator { get; set; }
+        public string Group_Id { get; set; }
     }
 }
