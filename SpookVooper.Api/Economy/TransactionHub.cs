@@ -17,7 +17,7 @@ namespace SpookVooper.Api.Economy
     /// <summary>
     /// A class used to connect to and use the transaction hub system
     /// </summary>
-    class TransactionHub
+    public class TransactionHub
     {
         public HubConnection connection;
 
@@ -46,7 +46,7 @@ namespace SpookVooper.Api.Economy
             }
             catch (System.Exception e)
             {
-                Console.WriteLine("En error occured while opening the SignalR for the Transaction hub");
+                Console.WriteLine("An error occured while opening the SignalR for the Transaction hub");
                 Console.WriteLine(e.Message);
             }
         }
