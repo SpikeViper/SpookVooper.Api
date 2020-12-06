@@ -23,6 +23,15 @@ namespace SpookVooper.Api.Entities
             }
         }
 
+        public string GetName()
+        {
+            return GetNameAsync().Result;
+        }
+        public async Task<string> GetNameAsync()
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/Entity/GetName?svid={Id}");
+        }
+
         public decimal GetBalance()
         {
             return GetBalanceAsync().Result;

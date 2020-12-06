@@ -54,10 +54,10 @@ namespace SpookVooper.Api
 
         public static async void HandleTransaction(Transaction transaction)
         {
-            User sender = new User(transaction.FromAccount);
-            User reciever = new User(transaction.ToAccount);
+            Entity sender = transaction.GetSender();
+            Entity reciever = transaction.GetReciever();
 
-            Console.WriteLine($"{await sender.GetUsernameAsync()} sent ¢{transaction.Amount} to {await reciever.GetUsernameAsync()}");
+            Console.WriteLine($"{await sender.GetNameAsync()} sent ¢{transaction.Amount} to {await reciever.GetNameAsync()}");
         }
     }
 }
