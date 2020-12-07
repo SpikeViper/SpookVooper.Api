@@ -6,16 +6,10 @@ namespace SpookVooper.Api.Entities
     /// This class exists to strip out sensitive data and provide only what the API
     /// should pass to endpoints. It does not automatically update and serves as a "snapshot" of the user at that moment.
     /// </summary>
-    public class UserSnapshot
+    public class UserSnapshot : EntitySnapshot
     {
         [JsonProperty]
-        public string Id { get; set; }
-
-        [JsonProperty]
         public string UserName { get; set; }
-
-        [JsonProperty]
-        public string Name { get; set; }
 
         // Other accounts
         [JsonProperty]
@@ -38,10 +32,6 @@ namespace SpookVooper.Api.Entities
         // Description
         [JsonProperty]
         public string description { get; set; }
-
-        // Credits
-        [JsonProperty]
-        public decimal credits { get; set; }
 
         [JsonProperty]
         public int api_use_count { get; set; }
@@ -92,9 +82,6 @@ namespace SpookVooper.Api.Entities
 
         [JsonProperty]
         public int discord_game_xp { get; set; }
-
-        [JsonProperty]
-        public string image_url { get; set; }
 
         // Government Stuff
         [JsonProperty]

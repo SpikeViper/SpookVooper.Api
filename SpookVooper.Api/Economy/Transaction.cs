@@ -31,17 +31,17 @@ namespace SpookVooper.Api.Economy
         [JsonProperty("Result")]
         private TaskResult Result;
 
-        public User GetSender() {
+        public Entity GetSender() {
 
             if (FromAccount == null || string.IsNullOrWhiteSpace(FromAccount))
             {
                 return null;
             }
 
-            return new User(FromAccount);
+            return new Entity(FromAccount);
         }
 
-        public User GetReciever()
+        public Entity GetReciever()
         {
 
             if (ToAccount == null || string.IsNullOrWhiteSpace(ToAccount))
@@ -49,7 +49,7 @@ namespace SpookVooper.Api.Economy
                 return null;
             }
 
-            return new User(ToAccount);
+            return new Entity(ToAccount);
         }
     }
 }

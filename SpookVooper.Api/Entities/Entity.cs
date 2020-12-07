@@ -13,7 +13,7 @@ namespace SpookVooper.Api.Entities
 
         public string Auth_Key { get; set; }
 
-        public Entity(string svid, string auth_key){
+        public Entity(string svid, string auth_key = null){
             this.Id = svid;
             this.Auth_Key = auth_key;
 
@@ -21,6 +21,15 @@ namespace SpookVooper.Api.Entities
             {
                 throw new VooperException("Svid should start with a u- or g- for an entity object!");
             }
+        }
+
+        public string GetName()
+        {
+            return GetNameAsync().Result;
+        }
+        public async Task<string> GetNameAsync()
+        {
+            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/Entity/GetName?svid={Id}");
         }
 
         public decimal GetBalance()
