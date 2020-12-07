@@ -13,7 +13,7 @@ namespace SpookVooper.Api.Entities
 
         public string Auth_Key { get; set; }
 
-        public Entity(string svid, string auth_key){
+        public Entity(string svid, string auth_key = null){
             this.Id = svid;
             this.Auth_Key = auth_key;
 
