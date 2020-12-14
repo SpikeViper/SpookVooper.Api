@@ -18,7 +18,7 @@
 | Route | Parameter(s) : Type | Return Value : Type |
 | --- | --- | --- |
 | /DoesGroupExist | SVID : string | bool |
-| /GetGroupMembers | SVID : string | all member's SVID : list |
+| /GetGroupMembers | SVID : string | all members' SVID : list |
 | /HasGroupPermission | SVID : string <br> user SVID : string <br> permission : string | bool |
 | /GetSVIDFromName | name : string | SVID : string |
 | /GetName | SVID : string | name : string |
@@ -36,7 +36,7 @@
 | /GetStockBuyPrice | ticker : string | cheapest stock available : decimal |
 | /GetQueueInfo | ticker : string <br> type : string | queue data : list\<dict> |
 | /GetUserStockOffers | ticker : string <br> SVID : string | stock offer data : list\<dict> |
-| /GetDistrictWealth | district name : string | district's wealth : decimal |
+| /GetDistrictWealth | district name : string | total wealth : decimal |
 | /GetDistrictUserWealth | district name : string | total user wealth : decimal |
 | /GetDistrictGroupWealth | district name : string | total group wealth : decimal |
 | /GetOwnerData | ticker : string | ownership data : list\<dict> |
