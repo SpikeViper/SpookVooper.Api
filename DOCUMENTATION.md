@@ -1,5 +1,6 @@
-# SpookVooper.Api Routes
-## User
+# SpookVooper.Api Documentation
+## Routes
+### User
 | Route | Parameter(s) : Type | Return Value : Type |
 | --- | --- | --- |
 | /GetUser | SVID : string | user data : dict |
@@ -14,7 +15,7 @@
 | /GetDaysSinceLastMove | SVID : string | days since last move : int |
 | /GetSenators | | senator data : list\<dict> |
 
-## Group
+### Group
 | Route | Parameter(s) : Type | Return Value : Type |
 | --- | --- | --- |
 | /DoesGroupExist | SVID : string | bool |
@@ -23,7 +24,7 @@
 | /GetSVIDFromName | name : string | SVID : string |
 | /GetName | SVID : string | name : string |
 
-## Eco
+### Eco
 | Route | Parameter(s) : Type | Return Value : Type |
 | --- | --- | --- |
 | /GetBalance | SVID : string | balance : decimal |
