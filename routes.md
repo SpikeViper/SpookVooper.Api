@@ -27,7 +27,7 @@
 | Route | Parameter(s) : Type | Return Value : Type |
 | --- | --- | --- |
 | /GetBalance | SVID : string | balance : decimal |
-| /SendTransactionByIDs | from (SVID) : string <br> to (SVID) <br> amount : decimal <br> auth : string <br> detail : string | result : string
+| /SendTransactionByIDs | from (SVID) : string <br> to (SVID) : string <br> amount : decimal <br> auth : string <br> detail : string | result : string
 | /GetStockValue | ticker : string | stock value : decimal |
 | /GetStockHistory | ticker : string <br> type : string <br> count : int <br> interval : int <br> | stock history : list |
 | /SubmitStockBuy | ticker : string <br> count : int <br> price : decimal <br> account ID (SVID) : string <br> auth : string | result : string |
