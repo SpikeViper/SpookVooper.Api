@@ -10,9 +10,9 @@
 | /GetUsernameFromMinecraft |  Minecraft ID : string | username : string |
 | /GetSVIDFromMinecraft | Minecraft ID : string | SVID : string |
 | /HasDiscordRole | Discord ID : ulong <br> Discord Role Name : string | bool |
-| /GetDiscordRoles | SVID : string | Discord roles : list<dict> |
+| /GetDiscordRoles | SVID : string | Discord roles : list\<dict> |
 | /GetDaysSinceLastMove | SVID : string | days since last move : int |
-| /GetSenators | | senator data : list<dict> |
+| /GetSenators | | senator data : list\<dict> |
 
 ## Group
 | Route | Parameter(s) : Type | Return Value : Type |
@@ -34,9 +34,9 @@
 | /SubmitStockSell | ticker : string <br> count : int <br> price : decimal <br> account ID (SVID) : string <br> auth : string | result : string |
 | /CancelOrder | orderid : int <br> account ID (SVID) : string <br> auth : string | result : string |
 | /GetStockBuyPrice | ticker : string | cheapest stock available : decimal |
-| /GetQueueInfo | ticker : string <br> type : string | queue data : list<dict> |
-| /GetUserStockOffers | ticker : string <br> SVID : string | stock offer data : list<dict> |
+| /GetQueueInfo | ticker : string <br> type : string | queue data : list\<dict> |
+| /GetUserStockOffers | ticker : string <br> SVID : string | stock offer data : list\<dict> |
 | /GetDistrictWealth | district name : string | district's wealth : decimal |
 | /GetDistrictUserWealth | district name : string | total user wealth : decimal |
 | /GetDistrictGroupWealth | district name : string | total group wealth : decimal |
-| /GetOwnerData | ticker : string | ownership data : list<dict> |
+| /GetOwnerData | ticker : string | ownership data : list\<dict> |
