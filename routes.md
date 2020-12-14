@@ -36,7 +36,7 @@
 | /GetStockBuyPrice | ticker : string | cheapest stock available : decimal |
 | /GetQueueInfo | ticker : string <br> type : string | queue data : list\<dict> |
 | /GetUserStockOffers | ticker : string <br> SVID : string | stock offer data : list\<dict> |
-| /GetDistrictWealth | district name : string | total wealth : decimal |
-| /GetDistrictUserWealth | district name : string | total user wealth : decimal |
-| /GetDistrictGroupWealth | district name : string | total group wealth : decimal |
+| /GetDistrictWealth | ID (district name) : string | total wealth : decimal |
+| /GetDistrictUserWealth | ID (district name) : string | total user wealth : decimal |
+| /GetDistrictGroupWealth | ID (district name) : string | total group wealth : decimal |
 | /GetOwnerData | ticker : string | ownership data : list\<dict> |
