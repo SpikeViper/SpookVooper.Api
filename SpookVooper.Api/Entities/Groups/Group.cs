@@ -110,6 +110,7 @@ namespace SpookVooper.Api.Entities.Groups
             return result;
         }
 
+        #pragma warning disable 0108
         public string GetName()
         {
             return GetNameAsync().Result;
@@ -119,6 +120,7 @@ namespace SpookVooper.Api.Entities.Groups
         {
             return await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetName?svid={Id}");
         }
+        #pragma warning restore 0108
 
         // Static methods
 
