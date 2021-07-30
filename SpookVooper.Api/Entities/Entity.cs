@@ -45,7 +45,7 @@ namespace SpookVooper.Api.Entities
 
             try
             {
-                result = decimal.Parse(response);
+                result = decimal.Parse(response, System.Globalization.NumberStyles.AllowDecimalPoint);
             }
 #pragma warning disable 0168
             catch (System.Exception e)
