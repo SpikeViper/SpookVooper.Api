@@ -4,6 +4,7 @@ using SpookVooper.Api.Economy.Stocks;
 using SpookVooper.Api.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace SpookVooper.Api
     public static class SpookVooperAPI
     {
         public static HttpClient client = new HttpClient();
+
+        public static CultureInfo USCulture = new CultureInfo("en-US");
 
         public static async Task<string> GetData(string url)
         {
@@ -77,7 +80,7 @@ namespace SpookVooper.Api
 
                 try
                 {
-                    result = decimal.Parse(response);
+                    result = decimal.Parse(response, USCulture);
                 }
                 #pragma warning disable 0168
                 catch (System.Exception e)
@@ -230,7 +233,7 @@ namespace SpookVooper.Api
 
                 try
                 {
-                    result = decimal.Parse(response);
+                    result = decimal.Parse(response, USCulture);
                 }
                 #pragma warning disable 0168
                 catch (System.Exception e)
