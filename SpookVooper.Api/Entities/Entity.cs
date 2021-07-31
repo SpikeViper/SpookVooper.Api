@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace SpookVooper.Api.Entities
 {
@@ -12,6 +13,8 @@ namespace SpookVooper.Api.Entities
         public string Id { get; set; }
 
         public string Auth_Key { get; set; }
+
+        public CultureInfo USCulture = new CultureInfo("en-US");
 
         public Entity(string svid, string auth_key = null){
             this.Id = svid;
@@ -45,7 +48,8 @@ namespace SpookVooper.Api.Entities
 
             try
             {
-                result = decimal.Parse(response);
+                
+                result = decimal.Parse(response, USCulture);
             }
 #pragma warning disable 0168
             catch (System.Exception e)
