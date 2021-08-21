@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Linq;
 
 namespace SpookVooper.Api.Forums
 {
@@ -28,6 +25,5 @@ namespace SpookVooper.Api.Forums
         public DateTime TimePosted { get; }
 
         public bool Removed { get; }
-
     }
 }

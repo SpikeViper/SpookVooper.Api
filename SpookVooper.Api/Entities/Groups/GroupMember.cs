@@ -8,6 +8,5 @@ namespace SpookVooper.Api.Entities.Groups
         public string Id { get; }
         public string User_Id { get; }
         public string Group_Id { get; }
-
     }
 }
