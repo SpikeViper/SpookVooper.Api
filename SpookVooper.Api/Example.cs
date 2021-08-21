@@ -44,12 +44,7 @@ namespace SpookVooper.Api
             tHub.OnTransaction += HandleTransaction;
 
             // Prevent process death
-            while (true)
-            {
-                //Console.WriteLine("Test");
-                //Console.WriteLine(tHub.connection.State);
-                Thread.Sleep(1000);
-            }
+            await Task.Delay(Timeout.Infinite).ConfigureAwait(false);
         }
 
         public static async void HandleTransaction(Transaction transaction)
