@@ -10,8 +10,6 @@
 | /GetSVIDFromDiscord | Discord ID : ulong | SVID : string |
 | /GetUsernameFromMinecraft |  Minecraft ID : string | username : string |
 | /GetSVIDFromMinecraft | Minecraft ID : string | SVID : string |
-| /HasDiscordRole | Discord ID : ulong <br> Discord Role Name : string | bool |
-| /GetDiscordRoles | SVID : string | Discord roles : list\<dict> |
 | /GetDaysSinceLastMove | SVID : string | days since last move : int |
 | /GetSenators | | senator data : list\<dict> |
 
