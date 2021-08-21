@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SpookVooper.Api.Forums
 {
@@ -9,15 +6,15 @@ namespace SpookVooper.Api.Forums
     {
         // Name of the blog category
         [Key]
-        public string CategoryID { get; set; }
+        public string CategoryID { get; }
 
-        public string Description { get; set; }
+        public string Description { get; }
 
-        public string Tags { get; set; }
+        public string Tags { get; }
 
-        public string Parent { get; set; }
+        public string Parent { get; }
 
         // Roles that are allowed to post, if empty there are no limits
-        public string RoleAccess { get; set; }
+        public string RoleAccess { get; }
     }
 }

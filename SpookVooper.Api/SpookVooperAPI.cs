@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualBasic.CompilerServices;
-using Newtonsoft.Json;
 using SpookVooper.Api.Economy.Stocks;
 using SpookVooper.Api.Entities;
 using System;
@@ -7,6 +6,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SpookVooper.Api
@@ -16,9 +18,26 @@ namespace SpookVooper.Api
     /// </summary>
     public static class SpookVooperAPI
     {
-        public static HttpClient client = new HttpClient();
+        public static readonly HttpClient client = new()
+        {
+            BaseAddress = new Uri("https://api.spookvooper.com/")
+        };
 
-        public static CultureInfo USCulture = new CultureInfo("en-US");
+        public static readonly CultureInfo USCulture = new("en-US");
+
+        public static async Task<T> GetDataFromJson<T>(string url)
+        {
+            var httpResponse = await client.GetAsync(url);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return await JsonSerializer.DeserializeAsync<T>(await httpResponse.Content.ReadAsStreamAsync());
+            }
+            else
+            {
+                throw new VooperException($"HTTP Error: {httpResponse.StatusCode}; {await httpResponse.Content.ReadAsStringAsync()}");
+            }
+        }
 
         public static async Task<string> GetData(string url)
         {
@@ -40,247 +59,141 @@ namespace SpookVooper.Api
         /// </summary>
         public static class Economy
         {
-
             public static async Task<TaskResult> SendTransactionByIDS(string from, string to, decimal amount, string auth, string detail)
             {
-                string response = "";
-
+                TaskResult result;
                 try
                 {
-                   response = await GetData($"https://api.spookvooper.com/eco/SendTransactionByIDS?from={from}&to={to}&amount={amount}&auth={auth}&detail={detail}");
+                    result = await GetDataFromJson<TaskResult>($"eco/SendTransactionByIDS?from={from}&to={to}&amount={amount}&auth={auth}&detail={detail}");
+                   
                 }
-                #pragma warning disable 0168
-                catch (VooperException e)
-                {
-                    // Ignore HTTP error codes, TaskResult handles it
-                }
-                #pragma warning restore 0168
-
-                TaskResult result = null;
-
-                try
-                {
-                    result = JsonConvert.DeserializeObject<TaskResult>(response);
-                }
-                #pragma warning disable 0168
-                catch(Exception e)
+                catch (VooperException)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
-                #pragma warning restore 0168
 
                 return result;
             }
 
             public static async Task<decimal> GetStockValue(string ticker)
             {
-                string response = await GetData($"https://api.spookvooper.com/eco/GetStockValue?ticker={ticker}");
+                string response = await GetData($"eco/GetStockValue?ticker={ticker}");
 
-                decimal result = 0m;
+                if (decimal.TryParse(response, NumberStyles.Number, USCulture, out decimal result)) return result;
 
-                try
-                {
-                    result = decimal.Parse(response, USCulture);
-                }
-                #pragma warning disable 0168
-                catch (System.Exception e)
-                {
-                    throw new VooperException($"Malformed response: {response}");
-                }
-                #pragma warning restore 0168
-
-                return result;
+                throw new VooperException($"Malformed response for GetStockValue: {response}");
             }
 
             public static async Task<List<decimal>> GetStockHistory(string ticker, string type, int count, int interval)
             {
-                string response = await GetData($"https://api.spookvooper.com/eco/GetStockHistory?ticker={ticker}&type={type}&count={count}&interval={interval}");
-
-                List<decimal> results = null;
-
+                List<decimal> results;
                 try
                 {
-                    results = JsonConvert.DeserializeObject<List<decimal>>(response);
+                    results = await GetDataFromJson<List<decimal>>($"eco/GetStockHistory?ticker={ticker}&type={type}&count={count}&interval={interval}");
                 }
-                #pragma warning disable 0168
-                catch (System.Exception e)
+                catch (Exception)
                 {
-                    throw new VooperException($"Malformed response: {response}");
+                    throw new VooperException($"Malformed response for GetStockHistory");
                 }
-                #pragma warning restore 0168
 
                 return results;
             }
 
             public static async Task<List<int>> GetStockVolumeHistory(string ticker, string type, int count, int interval)
             {
-                string response = await GetData($"https://api.spookvooper.com/eco/GetStockHistory?ticker={ticker}&type={type}&count={count}&interval={interval}");
-
-                List<int> results = null;
-
+                List<int> results;
                 try
                 {
-                    results = JsonConvert.DeserializeObject<List<int>>(response);
+                    results = await GetDataFromJson<List<int>>($"eco/GetStockHistory?ticker={ticker}&type={type}&count={count}&interval={interval}");
                 }
-                #pragma warning disable 0168
-                catch (System.Exception e)
+                catch (Exception)
                 {
-                    throw new VooperException($"Malformed response: {response}");
+                    throw new VooperException($"Malformed response for GetStockVolumeHistory");
                 }
-                #pragma warning restore 0168
 
                 return results;
             }
 
             public static async Task<TaskResult> SubmitStockBuy(string ticker, int count, decimal price, string accountid, string auth)
             {
-                string response = "";
-
+                TaskResult result;
                 try
                 {
-                    response = await GetData($"https://api.spookvooper.com/eco/SubmitStockBuy?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
+                    result = await GetDataFromJson<TaskResult>($"eco/SubmitStockBuy?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
                 }
-                #pragma warning disable 0168
-                catch (VooperException e)
-                {
-                    // Ignore HTTP error codes, TaskResult handles it
-                }
-                #pragma warning restore 0168
-
-                TaskResult result = null;
-
-                try
-                {
-                    result = JsonConvert.DeserializeObject<TaskResult>(response);
-                }
-                #pragma warning disable 0168
-                catch (Exception e)
+                catch (Exception)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
-                #pragma warning restore 0168
 
                 return result;
             }
 
             public static async Task<TaskResult> SubmitStockSell(string ticker, int count, decimal price, string accountid, string auth)
             {
-                string response = "";
-
+                TaskResult result;
                 try
                 {
-                    response = await GetData($"https://api.spookvooper.com/eco/SubmitStockSell?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
+                    result = await GetDataFromJson<TaskResult>($"eco/SubmitStockSell?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
                 }
-                #pragma warning disable 0168
-                catch (VooperException e)
-                {
-                    // Ignore HTTP error codes, TaskResult handles it
-                }
-                #pragma warning restore 0168
-
-                TaskResult result = null;
-
-                try
-                {
-                    result = JsonConvert.DeserializeObject<TaskResult>(response);
-                }
-                #pragma warning disable 0168
-                catch (Exception e)
+                catch (Exception)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
-                #pragma warning restore 0168
 
                 return result;
             }
 
             public static async Task<TaskResult> CancelOrder(string orderid, string accountid, string auth)
             {
-                string response = "";
-
+                TaskResult result;
                 try
                 {
-                    response = await GetData($"https://api.spookvooper.com/eco/CancelOrder?orderid={orderid}&accountid={accountid}&auth={auth}");
+                    result = await GetDataFromJson<TaskResult>($"eco/CancelOrder?orderid={orderid}&accountid={accountid}&auth={auth}");
                 }
-                #pragma warning disable 0168
-                catch (VooperException e)
-                {
-                    // Ignore HTTP error codes, TaskResult handles it
-                }
-                #pragma warning restore 0168
-
-                TaskResult result = null;
-
-                try
-                {
-                    result = JsonConvert.DeserializeObject<TaskResult>(response);
-                }
-                #pragma warning disable 0168
-                catch (Exception e)
+                catch (Exception)
                 {
                     result = new TaskResult(false, "An error occured getting a response from SpookVooper.");
                 }
-                #pragma warning restore 0168
 
                 return result;
             }
 
             public static async Task<decimal> GetStockBuyPrice(string ticker)
             {
-                string response = await GetData($"https://api.spookvooper.com/eco/GetStockBuyPrice?ticker={ticker}");
+                string response = await GetData($"eco/GetStockBuyPrice?ticker={ticker}");
 
-                decimal result = 0m;
+                if (decimal.TryParse(response, NumberStyles.Number, USCulture, out decimal result)) return result;
 
-                try
-                {
-                    result = decimal.Parse(response, USCulture);
-                }
-                #pragma warning disable 0168
-                catch (System.Exception e)
-                {
-                    throw new VooperException($"Malformed response: {response}");
-                }
-                #pragma warning restore 0168
-
-                return result;
+                throw new VooperException($"Malformed response for GetStockBuyPrice: {response}");
             }
 
             public static async Task<List<OfferInfo>> GetQueueInfo(string ticker, string type)
             {
-                string response = await GetData($"https://api.spookvooper.com/eco/GetQueueInfo?ticker={ticker}&type={type}");
-
-                List<OfferInfo> results = null;
-
+                List<OfferInfo> results;
                 try
                 {
-                    results = JsonConvert.DeserializeObject<List<OfferInfo>>(response);
+                    results = await GetDataFromJson<List<OfferInfo>>($"eco/GetQueueInfo?ticker={ticker}&type={type}");
                 }
-                #pragma warning disable 0168
-                catch (System.Exception e)
+                catch (Exception)
                 {
-                    throw new VooperException($"Malformed response: {response}");
+                    throw new VooperException($"Malformed response for GetQueueInfo");
                 }
-                #pragma warning restore 0168
 
                 return results;
             }
 
             public static async Task<List<StockOffer>> GetUserStockOffers(string ticker, string svid)
             {
-                string response = await GetData($"https://api.spookvooper.com/eco/GetUserStockOffers?ticker={ticker}&svid={svid}");
-
-                List<StockOffer> results = null;
-
+                List <StockOffer> results;
                 try
                 {
-                    results = JsonConvert.DeserializeObject<List<StockOffer>>(response);
+                    results = await GetDataFromJson<List<StockOffer>>($"eco/GetUserStockOffers?ticker={ticker}&svid={svid}");
                 }
-                #pragma warning disable 0168
-                catch (System.Exception e)
+                catch (Exception)
                 {
-                    throw new VooperException($"Malformed response: {response}");
+                    throw new VooperException($"Malformed response for GetUserStockOffers");
                 }
-                #pragma warning restore 0168
 
                 return results;
             }

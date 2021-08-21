@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SpookVooper.Api.Economy.Stocks
 {
@@ -14,31 +11,31 @@ namespace SpookVooper.Api.Economy.Stocks
     {
         // The ID of this stock offer
         [Key]
-        [JsonProperty("Id")]
-        public string Id { get; set; }
+        [JsonPropertyName("Id")]
+        public string Id { get; }
 
-        [JsonProperty("Owner_Name")]
-        public string Owner_Name { get; set; }
+        [JsonPropertyName("Owner_Name")]
+        public string OwnerName { get; }
 
         // Owner of this offer
-        [JsonProperty("Owner_Id")]
-        public string Owner_Id { get; set; }
+        [JsonPropertyName("Owner_Id")]
+        public string OwnerId { get; }
 
         // The ticker of the stock in this offer
-        [JsonProperty("Ticker")]
-        public string Ticker { get; set; }
+        [JsonPropertyName("Ticker")]
+        public string Ticker { get; }
 
         // The type of order that has been placed.
         // Valid options are BUY and SELL
-        [JsonProperty("Order_Type")]
-        public string Order_Type { get; set; }
+        [JsonPropertyName("Order_Type")]
+        public string OrderType { get; }
 
         // The target price for this order, also known as a "ASK" or "BID" value
-        [JsonProperty("Target")]
-        public decimal Target { get; set; }
+        [JsonPropertyName("Target")]
+        public decimal Target { get; }
 
         // The amount of stock in this offer
-        [JsonProperty("Amount")]
-        public int Amount { get; set; }
+        [JsonPropertyName("Amount")]
+        public int Amount { get; }
     }
 }

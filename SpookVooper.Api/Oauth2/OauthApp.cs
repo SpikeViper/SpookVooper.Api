@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SpookVooper.Api.Oauth2
 {
     public class OauthApp
     {
         [Key]
-        public string Id { get; set; }
-        public string Secret { get; set; }
-        public string Owner { get; set; }
-        public int Uses { get; set; }
-        public string Name { get; set; }
-        public string Image_Url { get; set; }
+        public string Id { get; }
+        public string Secret { get; }
+        public string Owner { get; }
+        public int Uses { get; }
+        public string Name { get; }
+        public string Image_Url { get; }
     }
 }

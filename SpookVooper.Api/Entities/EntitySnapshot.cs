@@ -1,24 +1,19 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Entities
 {
     public class EntitySnapshot
     {
-        [JsonProperty]
-        public string Id { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; }
 
-        [JsonProperty]
-        public string Name { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; }
 
-        [JsonProperty]
-        public decimal Credits { get; set; }
+        [JsonPropertyName("credits")]
+        public decimal Credits { get; }
 
-        [JsonProperty]
-        public string Image_Url { get; set; }
+        [JsonPropertyName("image_url")]
+        public string Avatar { get; }
     }
 }

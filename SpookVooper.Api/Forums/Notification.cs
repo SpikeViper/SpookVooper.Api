@@ -1,39 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SpookVooper.Api.Forums
 {
     public class Notification
     {
         // Types ex: "Comment", "Post", "Message"
-        public string Type { get; set; }
+        public string Type { get; }
 
         // Title of notification
-        public string Title { get; set; }
+        public string Title { get; }
 
         // Content of notification
-        public string Content { get; set; }
+        public string Content { get; }
 
         // ulong source for backlinking
-        public ulong Source { get; set; }
+        public ulong Source { get; }
 
         // Optional author of notification
-        public string Author { get; set; }
+        public string Author { get; }
 
         // Target of notification
-        public string Target { get; set; }
+        public string Target { get; }
 
         // Link for notification
-        public string Linkback { get; set; }
+        public string Linkback { get; }
 
         // Time sent the notification
-        public DateTime TimeSent { get; set; }
+        public DateTime TimeSent { get; }
 
         // If the notification has been seen
-        public bool Seen { get; set; }
+        public bool Seen { get; }
 
         // Unique ID
-        public string NotificationID { get; set; }
+        public string NotificationID { get; }
     }
 }

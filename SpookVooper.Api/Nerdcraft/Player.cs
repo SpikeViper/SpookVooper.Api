@@ -8,13 +8,13 @@ namespace SpookVooper.Api.Nerdcraft
     public class Player
     {
         [Key]
-        public string UUID { get; set; }
-        public string ApiKey { get; set; }
-        public string SVID { get; set; }
-        public string Name { get; set; }
-        public string DiscordRoles { get; set; }
-        public string Job { get; set; }
-        public DateTime LastKitUse { get; set; }
-        public decimal Credits { get; set; }
+        public string UUID { get; }
+        public string ApiKey { get; }
+        public string SVID { get; }
+        public string Name { get; }
+        public string DiscordRoles { get; }
+        public string Job { get; }
+        public DateTime LastKitUse { get; }
+        public decimal Credits { get; }
     }
 }
