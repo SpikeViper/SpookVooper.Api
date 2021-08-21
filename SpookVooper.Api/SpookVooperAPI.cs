@@ -27,15 +27,13 @@ namespace SpookVooper.Api
 
         public static async Task<T> GetDataFromJson<T>(string url)
         {
-            var httpResponse = await client.GetAsync(url);
-
-            if (httpResponse.IsSuccessStatusCode)
+            try
             {
-                return await JsonSerializer.DeserializeAsync<T>(await httpResponse.Content.ReadAsStreamAsync());
+                return await client.GetFromJsonAsync<T>(url);
             }
-            else
+            catch (Exception e)
             {
-                throw new VooperException($"HTTP Error: {httpResponse.StatusCode}; {await httpResponse.Content.ReadAsStringAsync()}");
+                throw new VooperException($"HTTP Error for GetDataFromJson!\n{e}");
             }
         }
 
@@ -185,7 +183,7 @@ namespace SpookVooper.Api
 
             public static async Task<List<StockOffer>> GetUserStockOffers(string ticker, string svid)
             {
-                List <StockOffer> results;
+                List<StockOffer> results;
                 try
                 {
                     results = await GetDataFromJson<List<StockOffer>>($"eco/GetUserStockOffers?ticker={ticker}&svid={svid}");
