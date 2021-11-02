@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SpookVooper.Api
 {
@@ -25,11 +26,26 @@ namespace SpookVooper.Api
 
         public static readonly CultureInfo USCulture = new("en-US");
 
+        public static async Task<TaskResult> GetTaskResultFromJson(string url)
+        {
+            var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            var stream = await response.Content.ReadAsStreamAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await JsonSerializer.DeserializeAsync<TaskResult>(stream);
+            }
+            else
+            {
+                return new TaskResult(false, $"HTTP Error: {response.StatusCode}; {new StreamReader(stream).ReadToEnd()}");
+            }
+        }
         public static async Task<T> GetDataFromJson<T>(string url)
         {
+            var response = await client.GetStreamAsync(url);
             try
             {
-                return await client.GetFromJsonAsync<T>(url);
+                return await JsonSerializer.DeserializeAsync<T>(response);
             }
             catch (Exception e)
             {
@@ -62,7 +78,7 @@ namespace SpookVooper.Api
                 TaskResult result;
                 try
                 {
-                    result = await GetDataFromJson<TaskResult>($"eco/SendTransactionByIDS?from={from}&to={to}&amount={amount}&auth={auth}&detail={detail}");
+                    result = await GetTaskResultFromJson($"eco/SendTransactionByIDS?from={from}&to={to}&amount={amount}&auth={auth}&detail={detail}");
                    
                 }
                 catch (VooperException)
@@ -117,7 +133,7 @@ namespace SpookVooper.Api
                 TaskResult result;
                 try
                 {
-                    result = await GetDataFromJson<TaskResult>($"eco/SubmitStockBuy?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
+                    result = await GetTaskResultFromJson($"eco/SubmitStockBuy?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
                 }
                 catch (Exception)
                 {
@@ -132,7 +148,7 @@ namespace SpookVooper.Api
                 TaskResult result;
                 try
                 {
-                    result = await GetDataFromJson<TaskResult>($"eco/SubmitStockSell?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
+                    result = await GetTaskResultFromJson($"eco/SubmitStockSell?ticker={ticker}&count={count}&price={price}&accountid={accountid}&auth={auth}");
                 }
                 catch (Exception)
                 {
@@ -147,7 +163,7 @@ namespace SpookVooper.Api
                 TaskResult result;
                 try
                 {
-                    result = await GetDataFromJson<TaskResult>($"eco/CancelOrder?orderid={orderid}&accountid={accountid}&auth={auth}");
+                    result = await GetTaskResultFromJson($"eco/CancelOrder?orderid={orderid}&accountid={accountid}&auth={auth}");
                 }
                 catch (Exception)
                 {

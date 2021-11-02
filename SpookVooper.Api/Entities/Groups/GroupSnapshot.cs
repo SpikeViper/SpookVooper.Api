@@ -6,24 +6,24 @@ namespace SpookVooper.Api.Entities
     {
 
         [JsonPropertyName("description")]
-        public string Description { get; }
+        public string Description { get; set; }
 
         [JsonPropertyName("open")]
-        public bool Open { get; }
+        public bool Open { get; set; }
 
         [JsonPropertyName("group_category")]
-        public string GroupCategory { get; }
+        public string GroupCategory { get; set; }
 
         [JsonPropertyName("owner_id")]
-        public string OwnerId { get; }
+        public string OwnerId { get; set; }
 
         [JsonPropertyName("district_id")]
-        public string DistrictId { get; }
+        public string DistrictId { get; set; }
 
         [JsonPropertyName("default_role_id")]
-        public string DefaultRoleId { get; }
+        public string DefaultRoleId { get; set; }
 
         [JsonPropertyName("credits_invested")]
-        public decimal CreditsInvested { get; }
+        public decimal CreditsInvested { get; set; }
     }
 }

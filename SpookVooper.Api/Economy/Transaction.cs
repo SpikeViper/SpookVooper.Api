@@ -6,38 +6,34 @@ namespace SpookVooper.Api.Economy
 {
     public enum ApplicableTax
     {
-        None = 0,
-        Corporate = 1,
-        Payroll = 2,
-        CapitalGains = 3,
-        Sales = 4
+        None = 0, Corporate = 1, Payroll = 2, CapitalGains = 3, Sales = 4
     }
 
     public class Transaction
     {
         [JsonPropertyName("FromAccount")]
-        public string FromAccount { get; }
+        public string FromAccount { get; set; }
 
         [JsonPropertyName("ToAccount")]
-        public string ToAccount { get; }
+        public string ToAccount { get; set; }
 
         [JsonPropertyName("Amount")]
-        public decimal Amount { get; }
+        public decimal Amount { get; set; }
 
         [JsonPropertyName("Detail")]
-        public string Detail { get; }
+        public string Detail { get; set; }
 
         [JsonPropertyName("Force")]
-        public bool Force { get; }
+        public bool Force { get; set; }
 
         [JsonPropertyName("IsCompleted")]
-        private bool IsCompleted { get; }
+        public bool IsCompleted { get; set; }
 
         [JsonPropertyName("Tax")]
-        public ApplicableTax Tax { get; }
+        public ApplicableTax Tax { get; set; }
 
         [JsonPropertyName("Result")]
-        private TaskResult Result { get; }
+        private TaskResult Result { get; set; }
 
         public Entity GetSender() {
 

@@ -44,15 +44,12 @@ namespace SpookVooper.Api
             tHub.OnTransaction += HandleTransaction;
 
             // Prevent process death
-            await Task.Delay(Timeout.Infinite).ConfigureAwait(false);
+            await Task.Delay(Timeout.Infinite);
         }
 
         public static async void HandleTransaction(Transaction transaction)
         {
-            Entity sender = transaction.GetSender();
-            Entity reciever = transaction.GetReciever();
-
-            Console.WriteLine($"{await sender.GetNameAsync()} sent ¢{transaction.Amount} to {await reciever.GetNameAsync()}" + transaction.TaxToString());
+            Console.WriteLine(transaction.TaxToString());
         }
     }
 }

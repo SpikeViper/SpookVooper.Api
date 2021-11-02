@@ -74,7 +74,7 @@ namespace SpookVooper.Api.Entities
 
             if (svid.StartsWith("u-")) return svid;
 
-            throw new VooperException($"Malformed response for GetSVIDFromName: {svid}");
+            return null;
         }
 
         public static async Task<string> GetUsernameFromDiscordAsync(ulong discordid)

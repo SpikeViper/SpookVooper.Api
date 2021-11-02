@@ -26,7 +26,7 @@ namespace SpookVooper.Api.Economy
 
             connection = new HubConnectionBuilder()
                 .WithUrl("https://spookvooper.com/transactionHub")
-                .WithAutomaticReconnect()
+                .WithAutomaticReconnect(new RetryPolicy())
                 .Build();
 
             connection.Closed += OnClosed;
@@ -34,15 +34,7 @@ namespace SpookVooper.Api.Economy
             connection.On("NotifyTransaction", (string message) =>
             {
                 Console.WriteLine(message);
-                Transaction transaction = null;
-                try
-                {
-                    transaction = JsonSerializer.Deserialize<Transaction>(message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                Transaction transaction = transaction = JsonSerializer.Deserialize<Transaction>(message);
 
                 OnTransaction?.Invoke(transaction);
             });
@@ -64,6 +56,24 @@ namespace SpookVooper.Api.Economy
             Console.WriteLine(e.Message);
 
             await connection.StartAsync();
+        }
+
+        public class RetryPolicy : IRetryPolicy
+        {
+            public TimeSpan? NextRetryDelay(RetryContext retryContext)
+            {
+                if (retryContext.ElapsedTime.Minutes < 1)
+                {
+                    return TimeSpan.FromSeconds(10);
+                }
+
+                if (retryContext.ElapsedTime.Hours < 5)
+                {
+                    return TimeSpan.FromMinutes(30);
+                }
+
+                return TimeSpan.FromMinutes(1);
+            }
         }
     }
 }

@@ -26,13 +26,16 @@ namespace SpookVooper.Api.Entities
             return await GetData($"Entity/GetName?svid={Id}");
         }
 
-        public async Task<decimal> GetBalanceAsync()
+        public async Task<TaskResult<decimal>> GetBalanceAsync()
         {
             string response = await GetData($"eco/GetBalance?svid={Id}");
 
-            if (decimal.TryParse(response, NumberStyles.Number, USCulture, out decimal result)) return result;
+            if (decimal.TryParse(response, NumberStyles.Number, USCulture, out decimal result)) 
+                return new TaskResult<decimal>(true, "Successfully got balance!", result);
 
-            throw new VooperException($"Malformed response for GetBalance: {response}");
+            Console.WriteLine("GetBalance returned a non parsable message: " + response);
+
+            return new TaskResult<decimal>(false, $"Malformed response for GetBalance: {response}", default);
         }
 
         public async Task<TaskResult> SendCreditsAsync(decimal amount, Entity to, string description)
@@ -45,7 +48,7 @@ namespace SpookVooper.Api.Entities
             TaskResult result;
             try
             {
-                result = await GetDataFromJson<TaskResult>($"eco/SendTransactionByIDS?from={Id}&to={to}&amount={amount}&auth={Auth_Key}&detail={description}");
+                result = await GetTaskResultFromJson($"eco/SendTransactionByIDS?from={Id}&to={to}&amount={amount}&auth={Auth_Key}&detail={description}");
             }
             catch (Exception e)
             {
