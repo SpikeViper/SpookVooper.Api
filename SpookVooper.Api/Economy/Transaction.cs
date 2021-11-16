@@ -33,7 +33,7 @@ namespace SpookVooper.Api.Economy
         public ApplicableTax Tax { get; set; }
 
         [JsonPropertyName("Result")]
-        private TaskResult Result { get; set; }
+        public TaskResult Result { get; set; }
 
         public Entity GetSender() {
 
