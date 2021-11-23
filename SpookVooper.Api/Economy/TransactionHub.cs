@@ -33,8 +33,9 @@ namespace SpookVooper.Api.Economy
 
             connection.On("NotifyTransaction", (string message) =>
             {
-                Console.WriteLine(message);
+                long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 Transaction transaction = transaction = JsonSerializer.Deserialize<Transaction>(message);
+                transaction.Timestamp = timestamp;
 
                 OnTransaction?.Invoke(transaction);
             });

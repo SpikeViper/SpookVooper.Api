@@ -11,6 +11,8 @@ namespace SpookVooper.Api.Economy
 
     public class Transaction
     {
+        [JsonIgnore]
+        public long Timestamp { get; set; }
         [JsonPropertyName("FromAccount")]
         public string FromAccount { get; set; }
 
