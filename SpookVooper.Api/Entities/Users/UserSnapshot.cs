@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Entities
 {
@@ -8,83 +8,104 @@ namespace SpookVooper.Api.Entities
     /// </summary>
     public class UserSnapshot : EntitySnapshot
     {
-        [JsonProperty]
-        public string UserName { get; set; }
+
+        [JsonPropertyName("userName")]
+        public string Username { get; set; }
 
         // Other accounts
-        [JsonProperty]
-        public string twitch_id { get; set; }
+        [JsonPropertyName("twitch_id")]
+        public string TwitchID { get; set; }
 
-        [JsonProperty]
-        public ulong? discord_id { get; set; }
+        [JsonPropertyName("discord_id")]
+        public ulong? DiscordID { get; set; }
 
         // Forum stuff
-        [JsonProperty]
-        public int post_likes { get; set; }
 
-        [JsonProperty]
-        public int comment_likes { get; set; }
+        [JsonPropertyName("post_likes")]
+        public int PostLikes { get; set; }
+
+        [JsonPropertyName("comment_likes")]
+        public int CommentLikes { get; set; }
 
         // NationStates nation
-        [JsonProperty]
-        public string nationstate { get; set; }
+
+        [JsonPropertyName("nationstate")]
+        public string Nationstate { get; set; }
 
         // Description
-        [JsonProperty]
-        public string description { get; set; }
 
-        [JsonProperty]
-        public int api_use_count { get; set; }
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
-        [JsonProperty]
-        public string minecraft_id { get; set; }
+
+        [JsonPropertyName("api_use_count")]
+        public int ApiUseCount { get; set; }
+
+
+        [JsonPropertyName("minecraft_id")]
+        public string MinecraftId { get; set; }
 
         // Twitch stuff
-        [JsonProperty]
-        public int twitch_last_message_minute { get; set; }
 
-        [JsonProperty]
-        public int twitch_message_xp { get; set; }
+        [JsonPropertyName("twitch_last_message_minute")]
+        public int TwitchLastMessageMinute { get; set; }
 
-        [JsonProperty]
-        public int twitch_messages { get; set; }
+
+        [JsonPropertyName("twitch_message_xp")]
+        public int TwitchMessageXP { get; set; }
+
+
+        [JsonPropertyName("twitch_messages")]
+        public int TwitchMessages { get; set; }
 
         // Discord stuff
-        [JsonProperty]
-        public int discord_commends { get; set; }
 
-        [JsonProperty]
-        public int discord_commends_sent { get; set; }
+        [JsonPropertyName("discord_commends")]
+        public int DiscordCommends { get; set; }
 
-        [JsonProperty]
-        public int discord_last_commend_hour { get; set; }
 
-        [JsonProperty]
-        public ulong discord_last_commend_message { get; set; }
+        [JsonPropertyName("discord_commends_sent")]
+        public int DiscordCommendsSent { get; set; }
 
-        [JsonProperty]
-        public int discord_message_xp { get; set; }
 
-        [JsonProperty]
-        public int discord_message_count { get; set; }
+        [JsonPropertyName("discord_last_commend_hour")]
+        public int DiscordLastCommendHour { get; set; }
 
-        [JsonProperty]
-        public int discord_last_message_minute { get; set; }
 
-        [JsonProperty]
-        public int discord_warning_count { get; set; }
+        [JsonPropertyName("discord_last_commend_message")]
+        public ulong DiscordLastCommendMessage { get; set; }
 
-        [JsonProperty]
-        public int discord_ban_count { get; set; }
 
-        [JsonProperty]
-        public int discord_kick_count { get; set; }
+        [JsonPropertyName("discord_message_xp")]
+        public int DiscordMessageXp { get; set; }
 
-        [JsonProperty]
-        public int discord_game_xp { get; set; }
+
+        [JsonPropertyName("discord_message_count")]
+        public int DiscordMessageCount { get; set; }
+
+
+        [JsonPropertyName("discord_last_message_minute")]
+        public int DiscordLastMessageMinute { get; set; }
+
+
+        [JsonPropertyName("discord_warning_count")]
+        public int DiscordWarningCount { get; set; }
+
+
+        [JsonPropertyName("discord_ban_count")]
+        public int DiscordBanCount { get; set; }
+
+
+        [JsonPropertyName("discord_kick_count")]
+        public int DiscordKickCount { get; set; }
+
+
+        [JsonPropertyName("discord_game_xp")]
+        public int DiscordGameXP { get; set; }
 
         // Government Stuff
-        [JsonProperty]
-        public string district { get; set; }
+
+        [JsonPropertyName("district")]
+        public string District { get; set; }
     }
 }

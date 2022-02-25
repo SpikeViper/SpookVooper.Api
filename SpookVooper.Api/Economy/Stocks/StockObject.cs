@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Concurrent;
 using SpookVooper.Api.Entities;
+using static SpookVooper.Api.SpookVooperAPI.Economy;
+using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Economy.Stocks
 {
@@ -13,32 +10,27 @@ namespace SpookVooper.Api.Economy.Stocks
     {
         // Stock ID is NOT the ticker, it is a UUID for this "stack" of stock
         [Key]
-        public string Id { get; set; }
+        [JsonPropertyName("Id")]
+        public string Id { get; }
 
         // The ticker is the unique symbol used to identify the stock
-        public string Ticker { get; set; }
+        [JsonPropertyName("Ticker")]
+        public string Ticker { get; }
 
         // The ID of the owning entity
-        public string Owner_Id { get; set; }
+        [JsonPropertyName("Owner_Id")]
+        public string Owner_Id { get; }
 
         // The amount of stock in this
-        public int Amount { get; set; }
+        [JsonPropertyName("Amount")]
+        public int Amount { get; }
 
         // The name of the stock item
+        [JsonPropertyName("Name")]
         public string Name { get { return Ticker + " Stock"; } }
 
-        public decimal GetValue()
-        {
-            return SpookVooperAPI.Economy.GetStockValue(Ticker).Result;
-        }
+        public async Task<decimal> GetValueAsync() => await GetStockValue(Ticker);
 
-        public async Task<decimal> GetValueAsync()
-        {
-            return await SpookVooperAPI.Economy.GetStockValue(Ticker);
-        }
-        public bool IsOwner(Entity entity)
-        {
-            return Owner_Id == entity.Id;
-        }
+        public bool IsOwner(Entity entity) => Owner_Id == entity.Id;
     }
 }

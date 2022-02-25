@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SpookVooper.Api.Government.Voting
 {
@@ -15,30 +12,30 @@ namespace SpookVooper.Api.Government.Voting
         /// The Id of this pass
         /// </summary>
         [Display(Name = "Pass ID")]
-        public string Id { get; set; }
+        public string Id { get; }
 
         /// <summary>
         /// The user Id that this pass is for
         /// </summary>
         [Display(Name = "User SVID")]
-        public string UserId { get; set; }
+        public string UserId { get; }
 
         /// <summary>
         /// The type of election the pass works for
         /// </summary>
         [Display(Name = "Election Type", Description = "The kind of election this applies to.")]
-        public string Type { get; set; }
+        public string Type { get; }
 
         /// <summary>
         /// The district this pass applies to
         /// </summary>
         [Display(Name = "District", Description = "The district this pass applies to.")]
-        public string District { get; set; }
+        public string District { get; }
 
         /// <summary>
         /// Bans the candidate from running rather than allowing them
         /// </summary>
         [Display(Name = "Blacklist", Description = "Block the candidate instead of allowing them.")]
-        public bool Blacklist { get; set; }
+        public bool Blacklist { get; }
     }
 }

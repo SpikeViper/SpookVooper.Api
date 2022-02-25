@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Economy.Stocks
 {
     public class OfferInfo
     {
-        [JsonProperty]
+        [JsonPropertyName("Target")]
         public decimal Target { get; set; }
 
-        [JsonProperty]
+        [JsonPropertyName("Amount")]
         public int Amount { get; set; }
     }
 }

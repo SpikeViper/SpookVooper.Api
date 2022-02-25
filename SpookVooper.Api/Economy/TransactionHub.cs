@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SpookVooper.Api.Economy
@@ -29,14 +26,17 @@ namespace SpookVooper.Api.Economy
 
             connection = new HubConnectionBuilder()
                 .WithUrl("https://spookvooper.com/transactionHub")
-                .WithAutomaticReconnect()
+                .WithAutomaticReconnect(new RetryPolicy())
                 .Build();
 
             connection.Closed += OnClosed;
 
             connection.On("NotifyTransaction", (string message) =>
             {
-                Transaction transaction = JsonConvert.DeserializeObject<Transaction>(message);
+                long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                Transaction transaction = transaction = JsonSerializer.Deserialize<Transaction>(message);
+                transaction.Timestamp = timestamp;
+
                 OnTransaction?.Invoke(transaction);
             });
 
@@ -44,10 +44,10 @@ namespace SpookVooper.Api.Economy
             {
                 connection.StartAsync();
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("An error occured while opening the SignalR for the Transaction hub");
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
             }
         }
 
@@ -57,6 +57,24 @@ namespace SpookVooper.Api.Economy
             Console.WriteLine(e.Message);
 
             await connection.StartAsync();
+        }
+
+        public class RetryPolicy : IRetryPolicy
+        {
+            public TimeSpan? NextRetryDelay(RetryContext retryContext)
+            {
+                if (retryContext.ElapsedTime.Minutes < 1)
+                {
+                    return TimeSpan.FromSeconds(10);
+                }
+
+                if (retryContext.ElapsedTime.Hours < 5)
+                {
+                    return TimeSpan.FromMinutes(30);
+                }
+
+                return TimeSpan.FromMinutes(1);
+            }
         }
     }
 }

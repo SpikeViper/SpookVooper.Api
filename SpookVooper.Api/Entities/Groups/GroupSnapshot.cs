@@ -1,27 +1,29 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Entities
 {
     public class GroupSnapshot : EntitySnapshot
     {
-        [JsonProperty]
+
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [JsonProperty]
+
+        [JsonPropertyName("open")]
         public bool Open { get; set; }
-        [JsonProperty]
-        public string Group_Category { get; set; }
-        [JsonProperty]
-        public string Owner_Id { get; set; }
-        [JsonProperty]
-        public string District_Id { get; set; }
-        [JsonProperty]
-        public string Default_Role_Id { get; set; }
-        [JsonProperty]
-        public decimal Credits_Invested { get; set; }
+
+        [JsonPropertyName("group_category")]
+        public string GroupCategory { get; set; }
+
+        [JsonPropertyName("owner_id")]
+        public string OwnerId { get; set; }
+
+        [JsonPropertyName("district_id")]
+        public string DistrictId { get; set; }
+
+        [JsonPropertyName("default_role_id")]
+        public string DefaultRoleId { get; set; }
+
+        [JsonPropertyName("credits_invested")]
+        public decimal CreditsInvested { get; set; }
     }
 }

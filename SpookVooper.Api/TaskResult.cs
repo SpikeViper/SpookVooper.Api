@@ -1,16 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api
 {
     public class TaskResult
     {
-        [JsonProperty("Info")]
+        [JsonPropertyName("info")]
         public string Info { get; set; }
-        [JsonProperty("Succeeded")]
+        [JsonPropertyName("succeeded")]
         public bool Succeeded { get; set; }
 
         public TaskResult(bool success, string info)
@@ -23,6 +19,27 @@ namespace SpookVooper.Api
         {
             Succeeded = false;
             Info = "An unknown error occured, or the task was never flagged as successful.";
+        }
+    }
+
+    public class TaskResult<T>
+    {
+        public string Info { get; set; }
+        public bool Succeeded { get; set; }
+        public T Data { get; set; }
+
+        public TaskResult(bool success, string info, T data)
+        {
+            Info = info;
+            Succeeded = success;
+            Data = data;
+        }
+
+        public TaskResult()
+        {
+            Succeeded = false;
+            Info = "An unknown error occured, or the task was never flagged as successful.";
+            Data = default;
         }
     }
 }

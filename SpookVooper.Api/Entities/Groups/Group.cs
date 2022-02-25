@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net.NetworkInformation;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using static SpookVooper.Api.SpookVooperAPI;
 
 namespace SpookVooper.Api.Entities.Groups
 {
@@ -30,133 +26,77 @@ namespace SpookVooper.Api.Entities.Groups
         }
 
         /// <summary>
-        /// Returns all available data about this user at the moment the snapshot is called
-        /// </summary>
-        public GroupSnapshot GetSnapshot()
-        {
-            return GetSnapshotAsync().Result;
-        }
-
-        /// <summary>
         /// Returns all available data about this user at the moment the snapshot is called (async)
         /// </summary>
         public async Task<GroupSnapshot> GetSnapshotAsync()
         {
-            string json = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetGroup?svid={Id}");
-
-            GroupSnapshot snapshot = null;
-
+            GroupSnapshot snapshot;
             try
             {
-                snapshot = JsonConvert.DeserializeObject<GroupSnapshot>(json);
+                snapshot = await GetDataFromJson<GroupSnapshot>($"group/GetGroup?svid={Id}");
+
             }
-#pragma warning disable 0168
-            catch (System.Exception e)
+            catch (VooperException)
             {
-                throw new VooperException($"Malformed response: {json}");
+                throw new VooperException($"Malformed response for GetGroup");
             }
-#pragma warning restore 0168
 
             return snapshot;
         }
-
-        public List<string> GetGroupMemberIDs()
-        {
-            return GetGroupMemberIDsAsync().Result;
-        }
+        /// <summary>
+        /// Returns all available data about this user at the moment the snapshot is called
+        /// </summary>
+        public GroupSnapshot GetSnapshot() => GetSnapshotAsync().Result;
 
         public async Task<List<string>> GetGroupMemberIDsAsync()
         {
-            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetGroupMembers?svid={Id}");
-
-            List<string> results = null;
-
+            List<string> results;
             try
             {
-                results = JsonConvert.DeserializeObject<List<string>>(response);
+                results = await GetDataFromJson<List<string>>($"group/GetGroupMembers?svid={Id}");
+
             }
-#pragma warning disable 0168
-            catch (System.Exception e)
+            catch (VooperException)
             {
-                throw new VooperException($"Malformed response: {response}");
+                throw new VooperException($"Malformed response for GetGroupMemberIDsAsync");
             }
-#pragma warning restore 0168
 
             return results;
         }
 
-        public bool HasGroupPermission(string userSVID, string permission)
-        {
-            return HasGroupPermissionAsync(userSVID, permission).Result;
-        }
-
         public async Task<bool> HasGroupPermissionAsync(string userSVID, string permission)
         {
-            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/HasGroupPermission?svid={Id}&usersvid={userSVID}&permission={permission}");
+            string response = await GetData($"group/HasGroupPermission?svid={Id}&usersvid={userSVID}&permission={permission}");
 
-            bool result = false;
+            if (bool.TryParse(response, out bool result)) return result;
 
-            try
-            {
-                result = bool.Parse(response);
-            }
-#pragma warning disable 0168
-            catch (System.Exception e)
-            {
-                throw new VooperException($"Malformed response: {response}");
-            }
-#pragma warning restore 0168
-
-            return result;
+            throw new VooperException($"Malformed response for HasGroupPermissionAsync: {response}");
         }
 
-        #pragma warning disable 0108
-        public string GetName()
+        public new async Task<string> GetNameAsync()
         {
-            return GetNameAsync().Result;
-        }
-
-        public async Task<string> GetNameAsync()
-        {
-            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetName?svid={Id}");
-        }
-        #pragma warning restore 0108
-
-        // Static methods
-
-        public static bool DoesGroupExist(string svid)
-        {
-            return DoesGroupExistAsync(svid).Result;
+            return await GetData($"group/GetName?svid={Id}");
         }
 
         public static async Task<bool> DoesGroupExistAsync(string svid)
         {
-            string response = await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/DoesGroupExist?svid={svid}");
+            string response = await GetData($"group/DoesGroupExist?svid={svid}");
 
-            bool result = false;
+            if (bool.TryParse(response, out bool result)) return result;
 
-            try
-            {
-                result = bool.Parse(response);
-            }
-#pragma warning disable 0168
-            catch (System.Exception e)
-            {
-                throw new VooperException($"Malformed response: {response}");
-            }
-#pragma warning restore 0168
-
-            return result;
-        }
-
-        public static string GetSVIDFromName(string name)
-        {
-            return GetSVIDFromNameAsync(name).Result;
+            throw new VooperException($"Malformed response for DoesGroupExist: {response}");
         }
 
         public static async Task<string> GetSVIDFromNameAsync(string name)
         {
-            return await SpookVooperAPI.GetData($"https://api.spookvooper.com/group/GetSVIDFromName?name={name}");
+            string svid = await GetData($"group/GetSVIDFromName?name={name}");
+
+            if (!svid.StartsWith("g-"))
+            {
+                throw new VooperException($"Malformed response for GetSVIDFromName: {svid}");
+            }
+
+            return svid;
         }
     }
 }

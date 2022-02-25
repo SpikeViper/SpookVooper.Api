@@ -1,35 +1,23 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Economy.Stocks
 {
     public class StockTradeModel
     {
-        [JsonProperty("Ticker")]
-        public string Ticker { get; set; }
+        public string Ticker { get; }
 
-        [JsonProperty("Amount")]
-        public int Amount { get; set; }
+        public int Amount { get; }
 
-        [JsonProperty("Price")]
-        public decimal Price { get; set; }
+        public decimal Price { get; }
 
-        [JsonProperty("From")]
-        public string From { get; set; }
+        public string From { get; }
 
-        [JsonProperty("To")]
-        public string To { get; set; }
+        public string To { get; }
 
-        [JsonProperty("Buy_Id")]
-        public string Buy_Id { get; set; }
+        public string BuyId { get; }
 
-        [JsonProperty("True_Price")]
-        public decimal True_Price { get; set; }
+        public decimal TruePrice { get; }
 
-        [JsonProperty("Sell_Id")]
-        public string Sell_Id { get; set; }
+        public string SellId { get; }
     }
 }

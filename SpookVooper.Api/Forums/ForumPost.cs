@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Linq;
 
 namespace SpookVooper.Api.Forums
 {
@@ -10,29 +7,29 @@ namespace SpookVooper.Api.Forums
     {
         // The ID of this post
         [Key]
-        public ulong PostID { get; set; }
+        public ulong PostID { get; }
 
         // The author of the post
-        public string Author { get; set; }
+        public string Author { get; }
 
         // Category this blog was posted in
-        public string Category { get; set; }
+        public string Category { get; }
 
         // Title of this post
-        public string Title { get; set; }
+        public string Title { get; }
 
         // Content of this post
-        public string Content { get; set; }
+        public string Content { get; }
 
         // Tags of this post
-        public string Tags { get; set; }
+        public string Tags { get; }
 
-        public bool Removed { get; set; }
+        public bool Removed { get; }
 
         // Pic post
-        public bool Picture { get; set; }
+        public bool Picture { get; }
 
         // Time this blog was posted
-        public DateTime TimePosted { get; set; }
+        public DateTime TimePosted { get; }
     }
 }

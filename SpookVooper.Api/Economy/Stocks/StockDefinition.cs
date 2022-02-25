@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SpookVooper.Api.Economy.Stocks
 {
@@ -6,12 +7,12 @@ namespace SpookVooper.Api.Economy.Stocks
     {
         // The ticker, or identifier, for this stock
         [Key]
-        public string Ticker { get; set; }
+        public string Ticker { get; }
 
         // The group that issued this stock
-        public string Group_Id { get; set; }
+        public string GroupId { get; }
 
         // Current value estimate
-        public decimal Current_Value { get; set; }
+        public decimal CurrentValue { get; }
     }
 }

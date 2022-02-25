@@ -11,11 +11,11 @@ namespace SpookVooper.Api
     /// </summary>
     public class Example
     {
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
             // Define two users with SVIDs
-            User spike = new User("u-2a0057e6-356a-4a49-b825-c37796cb7bd9");
-            User brendan = new User("u-02c977bb-0a6c-4eb2-bfca-5e9101025aaf");
+            User spike = new("u-2a0057e6-356a-4a49-b825-c37796cb7bd9");
+            User brendan = new("u-02c977bb-0a6c-4eb2-bfca-5e9101025aaf");
 
             // Print their names and balances
             Console.WriteLine($"{await spike.GetUsernameAsync()} has ¢{await spike.GetBalanceAsync()}");
@@ -33,31 +33,23 @@ namespace SpookVooper.Api
             // Need more data?
             // Use "snapshots" to get a large yet non-updating set of data from a group or user
             UserSnapshot snapShot = await spike.GetSnapshotAsync();
-            int messageCount = snapShot.discord_message_count;
+            int messageCount = snapShot.DiscordMessageCount;
 
             Console.WriteLine($"{await spike.GetUsernameAsync()} sent {messageCount} messages!");
 
             // Create transaction hub object
-            TransactionHub tHub = new TransactionHub();
+            TransactionHub tHub = new();
 
             // Hook transaction event to method
             tHub.OnTransaction += HandleTransaction;
 
             // Prevent process death
-            while (true)
-            {
-                //Console.WriteLine("Test");
-                //Console.WriteLine(tHub.connection.State);
-                Thread.Sleep(1000);
-            }
+            await Task.Delay(Timeout.Infinite);
         }
 
         public static async void HandleTransaction(Transaction transaction)
         {
-            Entity sender = transaction.GetSender();
-            Entity reciever = transaction.GetReciever();
-
-            Console.WriteLine($"{await sender.GetNameAsync()} sent ¢{transaction.Amount} to {await reciever.GetNameAsync()}");
+            Console.WriteLine(transaction.TaxToString());
         }
     }
 }
